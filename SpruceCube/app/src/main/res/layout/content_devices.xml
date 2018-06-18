@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:theme="@android:style/Theme.Material.Light"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.sprucecube.homeautomation.DevicesActivity"
+    tools:showIn="@layout/app_bar_devices">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center|top"
+            >
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="10"
+                android:textSize="30sp"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="Devices Connected"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="B1"
+            android:id="@+id/button1"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <Button
+            android:text="B2"
+            android:id="@+id/button2"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <Button
+            android:text="B3"
+            android:id="@+id/button3"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="B4"
+            android:id="@+id/button4"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <Button
+            android:text="B5"
+            android:id="@+id/button5"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <Button
+            android:text="B6"
+            android:id="@+id/button6"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="B7"
+            android:id="@+id/button7"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <Button
+            android:text="B8"
+            android:id="@+id/button8"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <Button
+            android:text="B9"
+            android:id="@+id/button9"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
+
+</LinearLayout>

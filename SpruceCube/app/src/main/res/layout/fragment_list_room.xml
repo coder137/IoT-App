@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.ListRoomFragment">
+
+    <include
+        android:id="@+id/add_room_button"
+        layout="@layout/rooms_card_layout"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_room_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/rooms_card_layout"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

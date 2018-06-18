@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!--<item-->
+        <!--android:id="@+id/refresh"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="refresh"-->
+        <!--app:showAsAction="always"-->
+        <!--android:icon="@mipmap/ic_action_refresh"-->
+        <!--/>-->
+    <item
+        android:id="@+id/mySwitch"
+        android:orderInCategory="101"
+        android:title="Switch"
+        app:showAsAction="always"
+        app:actionLayout="@layout/switch_item" />
+
+    <!--<item-->
+        <!--android:id="@+id/add_room"-->
+        <!--android:orderInCategory="102"-->
+        <!--android:title="Add Room"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--android:icon="@mipmap/ic_action_add_to_queue"-->
+        <!--/>-->
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="103"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+</menu>

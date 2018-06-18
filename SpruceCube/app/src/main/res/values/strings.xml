@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name" translatable="false">SpruceCube</string>
+
+    <string name="action_settings" translatable="true">Settings</string>
+
+    <!-- Might not need this -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notification</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Entries -->
+    <string name="button_function_prompt">Choose button Function</string>
+    <string name="add_room">Add Room</string>
+    <string-array name="button_functions">
+        <item>Switch</item>
+        <item>Dimming</item>
+    </string-array>
+
+</resources>
