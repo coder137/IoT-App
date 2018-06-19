@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.sprucecube.homeautomation.R;
 import com.sprucecube.homeautomation.misc.Params;
@@ -23,15 +24,17 @@ public class GenericFillButtonFragment extends Fragment {
     private static final String TAG = "GenericFillButtonFrag";
 
     String nav_id;
+    String room_name;
 
     public GenericFillButtonFragment() {
         // Required empty public constructor
     }
 
-    public static GenericFillButtonFragment newInstance(String nav_id) {
+    public static GenericFillButtonFragment newInstance(String nav_id, String roomName) {
         GenericFillButtonFragment fragment = new GenericFillButtonFragment();
         Bundle args = new Bundle();
         args.putString(Params.NAVIGATION_ID, nav_id);
+        args.putString(Params.ROOM_TITLE, roomName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,6 +45,7 @@ public class GenericFillButtonFragment extends Fragment {
         if(getArguments() != null)
         {
             nav_id = getArguments().getString(Params.NAVIGATION_ID);
+            room_name = getArguments().getString(Params.ROOM_TITLE);
         }
     }
 
@@ -63,6 +67,9 @@ public class GenericFillButtonFragment extends Fragment {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Params.PREFS, Context.MODE_PRIVATE);
 
         //Attach Button Actions for all 9 buttons
+        TextView roomStatus = activity.findViewById(R.id.content_status);
+        roomStatus.setText(room_name);
+
         buttonActions(nav_id, activity, sharedPreferences);
     }
 

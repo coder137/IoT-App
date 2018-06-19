@@ -18,6 +18,7 @@ public class ModifyRoomActivity extends AppCompatActivity {
 
     private static final String TAG = "ModifyRoomActivity";
     String room_title;
+    String room_image_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class ModifyRoomActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         room_title = intent.getStringExtra(Params.ROOM_TITLE);
+        room_image_id = intent.getStringExtra(Params.ROOM_IMAGE_ID);
 
         //set the room title here
         TextView textView = findViewById(R.id.tv_current_room_name);
@@ -68,7 +70,12 @@ public class ModifyRoomActivity extends AppCompatActivity {
         String data = AndroidFileHandler.readDataFromFile(this, Params.ROOM_FILE);
         String replacedData = data.replace(room_title+"\n", "");
 
+        String imageData = AndroidFileHandler.readDataFromFile(this, Params.ROOM_IMAGE_FILE);
+        String replaceImageData = imageData.replace(room_title+":"+room_image_id+"\n", "");
+
+        Log.d(TAG, replaceImageData);
         AndroidFileHandler.writeDataToFile(this, Params.ROOM_FILE, replacedData);
+        AndroidFileHandler.writeDataToFile(this, Params.ROOM_IMAGE_FILE, replaceImageData);
 
         Intent sendBackIntent = new Intent();
         setResult(RESULT_OK, sendBackIntent);

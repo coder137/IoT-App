@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center|top"
     tools:context="com.sprucecube.homeautomation.AddRoomActivity">
 
     <include
@@ -31,10 +31,26 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp" />
+    <LinearLayout
+
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Room Icon: "
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/add_room_icon_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
 
     <Button
         android:text="Save"

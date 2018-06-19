@@ -1,12 +1,16 @@
 package com.sprucecube.homeautomation.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sprucecube.homeautomation.R;
+
+import java.util.Arrays;
 
 public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapter.RoomHolder>
 {
@@ -17,16 +21,23 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
     {
 
         TextView roomText;
+        ImageView roomImageView;
 
         RoomHolder(View itemView)
         {
             super(itemView);
             roomText = itemView.findViewById(R.id.room_text);
+
+            //TODO, Set ImageView stuff here
+            roomImageView = itemView.findViewById(R.id.room_image);
+
         }
     }
 
     //TODO, Add images later, if possible
     private String[] rooms;
+    private String[] roomImageId;
+
     private OnItemClickListener listener = null;
     private OnLongItemClickListener longListener = null;
     public RoomRecyclerAdapter(String[] rooms)
@@ -34,12 +45,26 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         this.rooms = rooms;
     }
 
-    //updateRooms
     public void updateRooms(String[] rooms)
     {
         this.rooms = rooms;
         notifyDataSetChanged();
     }
+
+    public RoomRecyclerAdapter(String[] rooms, String[] roomImageId)
+    {
+        this.rooms = rooms;
+        this.roomImageId = roomImageId;
+    }
+
+    //updateRooms
+    public void updateRooms(String[] rooms, String[] roomImageId)
+    {
+        this.rooms = rooms;
+        this.roomImageId = roomImageId;
+        notifyDataSetChanged();
+    }
+
 
     public void setListener(OnItemClickListener listener)
     {
@@ -64,10 +89,17 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         if(rooms != null)
         {
             holder.roomText.setText(rooms[position]);
+        }
 
-            //TODO, We can set the image here later
+        if(roomImageId != null)
+        {
+            //DONE, Set the image here
+            holder.roomImageView.getLayoutParams().height = 100;
+            holder.roomImageView.getLayoutParams().width = 100;
 
-            //TODO, Add a click here, or do it in the parent fragment
+            String[] imageStringId = roomImageId[position].split(":");
+            Log.d(TAG, Arrays.toString(imageStringId));
+            holder.roomImageView.setImageResource(Integer.parseInt(imageStringId[1]));
         }
 
 

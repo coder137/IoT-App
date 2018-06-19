@@ -38,16 +38,11 @@
         android:layout_marginTop="20dp"
         />
 
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp" />
-
     <Button
         android:text="Delete Room"
         android:onClick="deleteRoomButtonClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
         />
 </LinearLayout>

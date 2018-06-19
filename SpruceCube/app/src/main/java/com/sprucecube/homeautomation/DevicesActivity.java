@@ -3,10 +3,8 @@ package com.sprucecube.homeautomation;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Helper;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +17,6 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.sprucecube.homeautomation.fragment.GenericFillButtonFragment;
 import com.sprucecube.homeautomation.fragment.ListRoomFragment;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
@@ -40,19 +37,10 @@ public class DevicesActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
 
-
         Toolbar toolbar = HelperMethods.addToolbar(this);
 
-
-        //TODO, Uncomment if needed
-//        GenericFillButtonFragment genericFillButtonFragment = GenericFillButtonFragment.newInstance(String.valueOf(nav_id));
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.fragment_view, genericFillButtonFragment).commit();
-        //DONE, Add one view here
-
-        //TODO, Adding GenericFill Button Methods here
-        HelperMethods.GenericFillButtonFragmentMethod(this, String.valueOf(nav_id), false);
-
+        //DONE, Adding GenericFill Button Methods here
+        HelperMethods.GenericFillButtonFragmentMethod(this, String.valueOf(nav_id), "Favourites", false);
 
         //This is needed
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -115,21 +103,19 @@ public class DevicesActivity extends AppCompatActivity
             {
                 //DONE, Make this the favourites tab
                 nav_id = String.valueOf(item.getItemId()); //NOTE, We get the item id here
-                HelperMethods.GenericFillButtonFragmentMethod(this, nav_id, true);
+                HelperMethods.GenericFillButtonFragmentMethod(this, nav_id, "Favourites", true);
                 Log.d(TAG, "Favourite Tab created");
                 return true;
             }
             case R.id.navigation_rooms:
             {
                 ListRoomFragment listRoomFragment = new ListRoomFragment();
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.fragment_view, listRoomFragment).addToBackStack(Params.BACK_STACK).commit();
                 HelperMethods.startFragmentMethod(this, listRoomFragment, true);
                 return true;
             }
-            case R.id.navigation_notifications:
+            case R.id.navigation_analytics:
             {
-                Toast.makeText(DevicesActivity.this, "Return Notifications", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DevicesActivity.this, "Return Analytics", Toast.LENGTH_SHORT).show();
                 return true;
             }
         }
@@ -179,6 +165,7 @@ public class DevicesActivity extends AppCompatActivity
 
         switch (id)
         {
+            //TODO, Change this to analytics
             case R.id.action_settings:
             {
                 //TODO, Create a settings activity,
@@ -199,26 +186,27 @@ public class DevicesActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if(id == R.id.nav_room)
-        {
-
-        }
-        else if (id == R.id.nav_favourite)
-        {
-
-        }
-        else if (id == R.id.nav_bedroom)
-        {
-
-        }
-        else if (id == R.id.nav_hall)
-        {
-
-        }
-        else if (id == R.id.nav_kitchen)
-        {
-
-        }
+        //TODO, Uncomment this if you need SIDEBAR NAVIGATION
+//        if(id == R.id.nav_room)
+//        {
+//
+//        }
+//        else if (id == R.id.nav_favourite)
+//        {
+//
+//        }
+//        else if (id == R.id.nav_bedroom)
+//        {
+//
+//        }
+//        else if (id == R.id.nav_hall)
+//        {
+//
+//        }
+//        else if (id == R.id.nav_kitchen)
+//        {
+//
+//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

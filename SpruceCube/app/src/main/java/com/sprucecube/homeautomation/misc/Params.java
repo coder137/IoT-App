@@ -4,6 +4,7 @@ package com.sprucecube.homeautomation.misc;
 public class Params
 {
 
+    //genericFragment
     public static final String NAVIGATION_ID = "navigation_id";
     public static final String BUTTON_ID = "button_id";
     public static final String IDENTIFICATION_ID = "identification_id";
@@ -15,6 +16,7 @@ public class Params
 
     //Filenames
     public static final String ROOM_FILE = "roomfile.txt";
+    public static final String ROOM_IMAGE_FILE = "roomimagefile.txt";
 
     //Fragment Manager
     public static final String BACK_STACK = "back_stack";
@@ -27,4 +29,5 @@ public class Params
 
     //ModifyRoomActivity
     public static final String ROOM_TITLE = "room_title";
+    public static final String ROOM_IMAGE_ID = "room_image_id";
 }

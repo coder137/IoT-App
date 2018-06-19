@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sprucecube.homeautomation.AddRoomActivity;
@@ -23,6 +24,9 @@ import com.sprucecube.homeautomation.adapter.RoomRecyclerAdapter;
 import com.sprucecube.homeautomation.misc.AndroidFileHandler;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -57,8 +61,13 @@ public class ListRoomFragment extends Fragment {
         Log.d(TAG, "onActivityCreated");
 
         final Activity activity = getActivity();
+
         CardView addRoomButtonCard = activity.findViewById(R.id.add_room_button);
         TextView addRoomButtonText = addRoomButtonCard.findViewById(R.id.room_text);
+
+        //Remove image from here
+        ImageView addRoomImageView = addRoomButtonCard.findViewById(R.id.room_image);
+        addRoomImageView.setImageResource(0);
         addRoomButtonText.setText("Add New Room Here");
 
         addRoomButtonCard.setOnClickListener(new View.OnClickListener() {
@@ -68,17 +77,14 @@ public class ListRoomFragment extends Fragment {
                 //DONE, Start a new room activity here
                 Log.d(TAG, "Creating new Room");
                 Intent intent = new Intent(activity, AddRoomActivity.class);
-                //startActivity(intent);
-
                 startActivityForResult(intent, ADD_CODE);
-                //DONE, Set onActivityResult Below
+
             }
         });
 
         //Setting the Recycler View here
         //Add your recycler view here
         recyclerView = activity.findViewById(R.id.fragment_room_recyclerview);
-
         recyclerView.setHasFixedSize(true);
 
         //Use Linear Layout Manager
@@ -87,7 +93,11 @@ public class ListRoomFragment extends Fragment {
 
         //Specify adapter
         String[] rooms = readFromFile(Params.ROOM_FILE);
-        adapter = new RoomRecyclerAdapter(rooms);
+        String[] roomImageIds = readFromFile(Params.ROOM_IMAGE_FILE);
+        Log.d(TAG, Arrays.toString(roomImageIds));
+
+//        adapter = new RoomRecyclerAdapter(rooms);
+        adapter = new RoomRecyclerAdapter(rooms, roomImageIds);
         recyclerView.setAdapter(adapter);
 
         //We can create a RecyclerView Listener here, use it to attach the view to an intent
@@ -100,7 +110,7 @@ public class ListRoomFragment extends Fragment {
                 String roomName = textFromRoomCard.getText().toString();
                 Log.d(TAG, "Button Clicked: "+roomName);
 
-                HelperMethods.GenericFillButtonFragmentMethod((AppCompatActivity) getActivity(), roomName, true);
+                HelperMethods.GenericFillButtonFragmentMethod((AppCompatActivity) getActivity(), roomName, roomName, true);
             }
         });
 
@@ -111,12 +121,15 @@ public class ListRoomFragment extends Fragment {
 
                 int cardViewId = view.getId();
                 CardView cardView = view.findViewById(cardViewId);
+
                 TextView cardViewText = cardView.findViewById(R.id.room_text);
+                ImageView imageViewText = cardView.findViewById(R.id.room_image);
                 Log.d(TAG, cardViewText.getText().toString());
 
-                //TODO, Start an Activity here and supply the name here (If needed we can change the value here)
+                //DONE, Start an Activity here and supply the name here (If needed we can change the value here)
                 Intent modOrDeleteIntent = new Intent(getActivity(), ModifyRoomActivity.class);
                 modOrDeleteIntent.putExtra(Params.ROOM_TITLE, cardViewText.getText().toString());
+                modOrDeleteIntent.putExtra(Params.ROOM_IMAGE_ID, String.valueOf(imageViewText.getId()) );
                 startActivityForResult(modOrDeleteIntent, MOD_CODE);
             }
         });
@@ -132,13 +145,13 @@ public class ListRoomFragment extends Fragment {
 
             //DONE, Refresh the Recycler view here
             //Open the file here readfrom it and add it again
-            adapter.updateRooms(readFromFile(Params.ROOM_FILE));
+            adapter.updateRooms(readFromFile(Params.ROOM_FILE), readFromFile(Params.ROOM_IMAGE_FILE));
         }
 
         if(resultCode == RESULT_OK && requestCode == MOD_CODE)
         {
             Log.d(TAG, "We need to modify room");
-            adapter.updateRooms(readFromFile(Params.ROOM_FILE));
+            adapter.updateRooms(readFromFile(Params.ROOM_FILE), readFromFile(Params.ROOM_IMAGE_FILE));
         }
     }
 
@@ -153,4 +166,9 @@ public class ListRoomFragment extends Fragment {
         }
         return null;
     }
+
+//    String[] readImageTagFromFile(String filename)
+//    {
+//        return nu
+//    }
 }

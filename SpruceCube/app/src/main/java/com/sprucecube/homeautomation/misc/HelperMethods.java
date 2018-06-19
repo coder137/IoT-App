@@ -39,10 +39,10 @@ public class HelperMethods
         activity.getSupportActionBar().setTitle(title);
     }
 
-    public static void GenericFillButtonFragmentMethod(AppCompatActivity activity, String nav_id, boolean backStack)
+    public static void GenericFillButtonFragmentMethod(AppCompatActivity activity, String nav_id, String room_name, boolean backStack)
     {
         Log.d(TAG, "GenericFillButtonFragmentMethod");
-        GenericFillButtonFragment genericFillButtonFragment = GenericFillButtonFragment.newInstance(nav_id);
+        GenericFillButtonFragment genericFillButtonFragment = GenericFillButtonFragment.newInstance(nav_id, room_name);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         if(backStack)
         {

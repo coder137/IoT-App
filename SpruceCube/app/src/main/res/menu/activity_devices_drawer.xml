@@ -3,32 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group
-        android:checkableBehavior="single"
-        android:enabled="true"
-        android:visible="true">
-        <item
-            android:id="@+id/nav_room"
-            android:icon="@drawable/ic_dashboard_black_24dp"
-            android:title="Rooms"
-            />
-        <item
-            android:id="@+id/nav_favourite"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Favourites" />
-        <item
-            android:id="@+id/nav_bedroom"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Bedroom" />
-        <item
-            android:id="@+id/nav_hall"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Hall" />
-        <item
-            android:id="@+id/nav_kitchen"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Kitchen" />
-    </group>
+    <!-- TODO, Uncomment this later -->
+    <!--<group-->
+        <!--android:checkableBehavior="single"-->
+        <!--android:enabled="true"-->
+        <!--android:visible="true">-->
+        <!--<item-->
+            <!--android:id="@+id/nav_room"-->
+            <!--android:icon="@drawable/ic_dashboard_black_24dp"-->
+            <!--android:title="Rooms"-->
+            <!--/>-->
+        <!--<item-->
+            <!--android:id="@+id/nav_favourite"-->
+            <!--android:icon="@drawable/ic_menu_camera"-->
+            <!--android:title="Favourites" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_bedroom"-->
+            <!--android:icon="@drawable/ic_menu_gallery"-->
+            <!--android:title="Bedroom" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_hall"-->
+            <!--android:icon="@drawable/ic_menu_slideshow"-->
+            <!--android:title="Hall" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_kitchen"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="Kitchen" />-->
+    <!--</group>-->
 
     <!--<item android:title="Communicate">-->
         <!--<menu>-->
