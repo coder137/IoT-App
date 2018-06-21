@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- TODO, Add an image here for logo, if possible -->
+        <!-- DONE, Add an image here for logo, if possible -->
         <ImageView
             android:id="@+id/room_image"
             android:src="@mipmap/fan"

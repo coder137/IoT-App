@@ -1,5 +1,14 @@
-## BUILD 4 (WORKING)
+## BUILD 4
 
+#### 21.06.18
+
+1. Bug while deleting images from Room
+2. Updated Back Button press from ModifyRoomActivity
+3. Updated BackButton press from AddRoomActivity
+4. Cleaned Fragment -> ListRoomFragment
+5. Cleaned adapter -> RoomRecyclerAdapter
+
+#### 19.06.18
 
 1. Removed side navigation menus
 2. Changed BottomNavigation Notification to Analytics and added custom ICON
@@ -13,6 +22,12 @@
 1. Modify ListRooms (ICON Functionality)
 2. Attach icon for Buttons
 3. Modify icon for Buttons
+4. `AddButtonFunctionFragment` add check for `EditText` if blank
+
+> Cleanups TODO
+
+1. AddRoomActivity
+2. ModifyRoomActivity
 
 ## BUILD 3
 

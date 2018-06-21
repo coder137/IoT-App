@@ -25,13 +25,14 @@ import com.sprucecube.homeautomation.misc.AndroidFileHandler;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
- * A simple {@link Fragment} subclass.
+ * ListRoomFragment
+ * CLEANED: 21.06.18
  */
 public class ListRoomFragment extends Fragment {
 
@@ -41,6 +42,9 @@ public class ListRoomFragment extends Fragment {
 
     RecyclerView recyclerView;
     RoomRecyclerAdapter adapter;
+
+    String[] rooms;
+    String[] roomImageIds;
 
     public ListRoomFragment() {
         // Required empty public constructor
@@ -59,9 +63,115 @@ public class ListRoomFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Log.d(TAG, "onActivityCreated");
-
         final Activity activity = getActivity();
 
+        addRoomCardAction(activity);
+
+        //Initialize Recycler view here
+        recyclerViewInitialize(activity);
+
+        //Add shit here
+        rooms = readFromFile(Params.ROOM_FILE);
+        roomImageIds = readFromFile(Params.ROOM_IMAGE_FILE);
+
+        Log.d(TAG,"rooms: "+Arrays.toString(rooms));
+        Log.d(TAG, "roomImageIds: "+Arrays.toString(roomImageIds));
+
+        //We now update the view
+        adapter.updateRooms(rooms, roomImageIds);
+
+        //We can create a RecyclerView Listener here, use it to attach the view to an intent
+        adapter.setListener(new RoomRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view)
+            {
+                fillButtonCardAction(view);
+            }
+        });
+
+        adapter.setLongListener(new RoomRecyclerAdapter.OnLongItemClickListener()
+        {
+            @Override
+            public void onLongItemClick(View view)
+            {
+                modifyCardAction(view);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && (requestCode == ADD_CODE || requestCode == MOD_CODE))
+        {
+            //DONE, Refresh the Recycler view here
+            //Open the file here readfrom it and add it again
+            Log.d(TAG, "RequestCode: "+requestCode);
+
+            rooms = readFromFile(Params.ROOM_FILE);
+            roomImageIds = readFromFile(Params.ROOM_IMAGE_FILE);
+            Log.d(TAG, Arrays.toString(rooms));
+
+            adapter.updateRooms(rooms, roomImageIds);
+        }
+    }
+
+
+    ////NOTE, Own functions start from here
+    void recyclerViewInitialize(Activity activity)
+    {
+        recyclerView = activity.findViewById(R.id.fragment_room_recyclerview);
+        recyclerView.setHasFixedSize(true);
+
+        //Use Linear Layout Manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        //Specify adapter
+        adapter = new RoomRecyclerAdapter();
+        recyclerView.setAdapter(adapter);
+    }
+
+    void fillButtonCardAction(View view)
+    {
+        CardView roomCard = view.findViewById(R.id.room_card);
+        TextView textFromRoomCard = roomCard.findViewById(R.id.room_text);
+
+        String roomName = textFromRoomCard.getText().toString();
+        Log.d(TAG, "Button Clicked: "+roomName);
+        HelperMethods.GenericFillButtonFragmentMethod((AppCompatActivity) getActivity(), roomName, roomName, true);
+    }
+
+    ///Own Function Declarations here
+    void modifyCardAction(View view)
+    {
+        Log.d(TAG, "modifyCardAction");
+
+        int cardViewId = view.getId();
+        CardView cardView = view.findViewById(cardViewId);
+        TextView cardTextView = cardView.findViewById(R.id.room_text);
+
+        String roomName = cardTextView.getText().toString();
+
+        //NOTE, We find the imageIndexNo along with the cardView
+        ArrayList<String> listRooms = new ArrayList<>(Arrays.asList(rooms));
+        int imageIndexNo = listRooms.indexOf(roomName);
+
+        //TODO, Remove if not needed
+        Log.d(TAG, "Button Clicked: "+roomName);
+        Log.d(TAG, "imageIndexNo: "+imageIndexNo);
+        Log.d(TAG, "roomImageId: "+roomImageIds[imageIndexNo]);
+
+        //DONE, Start an Activity here and supply the name here (If needed we can change the value here)
+        Intent modOrDeleteIntent = new Intent(getActivity(), ModifyRoomActivity.class);
+        modOrDeleteIntent.putExtra(Params.ROOM_TITLE, cardTextView.getText().toString());
+        modOrDeleteIntent.putExtra(Params.ROOM_IMAGE_ID, roomImageIds[imageIndexNo] );
+        startActivityForResult(modOrDeleteIntent, MOD_CODE);
+    }
+
+    void addRoomCardAction(final Activity activity)
+    {
         CardView addRoomButtonCard = activity.findViewById(R.id.add_room_button);
         TextView addRoomButtonText = addRoomButtonCard.findViewById(R.id.room_text);
 
@@ -78,97 +188,17 @@ public class ListRoomFragment extends Fragment {
                 Log.d(TAG, "Creating new Room");
                 Intent intent = new Intent(activity, AddRoomActivity.class);
                 startActivityForResult(intent, ADD_CODE);
-
             }
         });
-
-        //Setting the Recycler View here
-        //Add your recycler view here
-        recyclerView = activity.findViewById(R.id.fragment_room_recyclerview);
-        recyclerView.setHasFixedSize(true);
-
-        //Use Linear Layout Manager
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        //Specify adapter
-        String[] rooms = readFromFile(Params.ROOM_FILE);
-        String[] roomImageIds = readFromFile(Params.ROOM_IMAGE_FILE);
-        Log.d(TAG, Arrays.toString(roomImageIds));
-
-//        adapter = new RoomRecyclerAdapter(rooms);
-        adapter = new RoomRecyclerAdapter(rooms, roomImageIds);
-        recyclerView.setAdapter(adapter);
-
-        //We can create a RecyclerView Listener here, use it to attach the view to an intent
-        adapter.setListener(new RoomRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view) {
-                //Do Stuff here
-                CardView roomCard = view.findViewById(R.id.room_card);
-                TextView textFromRoomCard = roomCard.findViewById(R.id.room_text);
-                String roomName = textFromRoomCard.getText().toString();
-                Log.d(TAG, "Button Clicked: "+roomName);
-
-                HelperMethods.GenericFillButtonFragmentMethod((AppCompatActivity) getActivity(), roomName, roomName, true);
-            }
-        });
-
-        adapter.setLongListener(new RoomRecyclerAdapter.OnLongItemClickListener() {
-            @Override
-            public void onLongItemClick(View view) {
-                Log.d(TAG, "Long Click Listner has fired");
-
-                int cardViewId = view.getId();
-                CardView cardView = view.findViewById(cardViewId);
-
-                TextView cardViewText = cardView.findViewById(R.id.room_text);
-                ImageView imageViewText = cardView.findViewById(R.id.room_image);
-                Log.d(TAG, cardViewText.getText().toString());
-
-                //DONE, Start an Activity here and supply the name here (If needed we can change the value here)
-                Intent modOrDeleteIntent = new Intent(getActivity(), ModifyRoomActivity.class);
-                modOrDeleteIntent.putExtra(Params.ROOM_TITLE, cardViewText.getText().toString());
-                modOrDeleteIntent.putExtra(Params.ROOM_IMAGE_ID, String.valueOf(imageViewText.getId()) );
-                startActivityForResult(modOrDeleteIntent, MOD_CODE);
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == RESULT_OK && requestCode == ADD_CODE)
-        {
-            Log.d(TAG, "We get the data from AddRoomActivity");
-
-            //DONE, Refresh the Recycler view here
-            //Open the file here readfrom it and add it again
-            adapter.updateRooms(readFromFile(Params.ROOM_FILE), readFromFile(Params.ROOM_IMAGE_FILE));
-        }
-
-        if(resultCode == RESULT_OK && requestCode == MOD_CODE)
-        {
-            Log.d(TAG, "We need to modify room");
-            adapter.updateRooms(readFromFile(Params.ROOM_FILE), readFromFile(Params.ROOM_IMAGE_FILE));
-        }
     }
 
     String[] readFromFile(String filename)
     {
-        //FIXED, Used to crash here (throw an exception when file was not present)
         String data = AndroidFileHandler.readDataFromFile(getContext(), filename);
-        //Log.d(TAG, String.valueOf(data));
         if (data != null)
         {
             return data.split("\n");
         }
         return null;
     }
-
-//    String[] readImageTagFromFile(String filename)
-//    {
-//        return nu
-//    }
 }

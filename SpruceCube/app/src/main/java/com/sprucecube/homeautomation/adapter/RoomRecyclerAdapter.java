@@ -9,9 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sprucecube.homeautomation.R;
+import com.sprucecube.homeautomation.misc.Params;
 
+import java.io.File;
 import java.util.Arrays;
 
+/**
+ * RoomRecyclerAdapter
+ * CLEANED: 21.06.18
+ */
 public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapter.RoomHolder>
 {
     private static final String TAG = "RoomRecyclerAdapter";
@@ -27,28 +33,20 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         {
             super(itemView);
             roomText = itemView.findViewById(R.id.room_text);
-
-            //TODO, Set ImageView stuff here
             roomImageView = itemView.findViewById(R.id.room_image);
-
         }
     }
 
-    //TODO, Add images later, if possible
     private String[] rooms;
     private String[] roomImageId;
 
     private OnItemClickListener listener = null;
     private OnLongItemClickListener longListener = null;
-    public RoomRecyclerAdapter(String[] rooms)
-    {
-        this.rooms = rooms;
-    }
 
-    public void updateRooms(String[] rooms)
+    public RoomRecyclerAdapter()
     {
-        this.rooms = rooms;
-        notifyDataSetChanged();
+        rooms = null;
+        roomImageId = null;
     }
 
     public RoomRecyclerAdapter(String[] rooms, String[] roomImageId)
@@ -93,10 +91,13 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
 
         if(roomImageId != null)
         {
-            //DONE, Set the image here
+            //Set the image size here (100 pixel by 100 pixel)
             holder.roomImageView.getLayoutParams().height = 100;
             holder.roomImageView.getLayoutParams().width = 100;
 
+            //Log.d(TAG, "roomImageId: "+roomImageId[position]);
+
+            //NOTE, Split the data and attach id imageView
             String[] imageStringId = roomImageId[position].split(":");
             Log.d(TAG, Arrays.toString(imageStringId));
             holder.roomImageView.setImageResource(Integer.parseInt(imageStringId[1]));
@@ -132,10 +133,8 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         {
             return rooms.length;
         }
-
         return 0;
     }
-
 
     //NOTE, Setting OnClick listener here
     public interface OnItemClickListener
@@ -147,7 +146,4 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
     {
         void onLongItemClick(View view);
     }
-
-
-
 }

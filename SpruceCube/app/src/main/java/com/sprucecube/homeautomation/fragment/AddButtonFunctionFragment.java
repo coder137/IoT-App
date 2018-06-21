@@ -29,7 +29,6 @@ public class AddButtonFunctionFragment extends Fragment {
     private static final String IDEN_ID = "iden_id";
     String identification_id;
 
-
     public AddButtonFunctionFragment() {
         // Required empty public constructor
     }

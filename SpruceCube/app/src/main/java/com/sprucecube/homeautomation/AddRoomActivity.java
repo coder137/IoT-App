@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -22,6 +23,10 @@ import com.sprucecube.homeautomation.misc.Params;
 import java.io.File;
 import java.util.ArrayList;
 
+
+/**
+ * TODO, Clean this
+ */
 public class AddRoomActivity extends AppCompatActivity {
 
     private static final String TAG = "AddRoomActivity";
@@ -46,10 +51,6 @@ public class AddRoomActivity extends AppCompatActivity {
         Spinner addRoomIconSpinner = findViewById(R.id.add_room_icon_spinner);
         AddIconArrayAdapter adapter = new AddIconArrayAdapter(this, R.layout.add_icon_row, R.id.icon_name, list);
         addRoomIconSpinner.setAdapter(adapter);
-
-        //TODO, DEBUGGING (TO DELETE RECENT FILE)
-//        File file = new File(getFilesDir(), Params.ROOM_FILE);
-//        Log.d(TAG, file.delete() + " :file is deleted");
     }
 
     public void saveRoomInfoClick(View view)
@@ -71,14 +72,26 @@ public class AddRoomActivity extends AppCompatActivity {
         AndroidFileHandler.writeDataToFileAppend(this, Params.ROOM_FILE, roomName+"\n");
         AndroidFileHandler.writeDataToFileAppend(this, Params.ROOM_IMAGE_FILE, roomName+":"+data.getImageId()+"\n");
 
-//        String data = AndroidFileHandler.readDataFromFile(this, Params.ROOM_FILE);
-//        Log.d(TAG, data);
-
         //WORKS, Check if this hits the request (ListRoomFragment)
         Intent sendBackIntent = new Intent();
-        //TODO, we never use this!
+        //TODO, we never use this!, remove and check
         sendBackIntent.putExtra(Params.UPDATE_BOOL, true);
         setResult(RESULT_OK, sendBackIntent);
         finish(); //return from here
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        switch (id)
+        {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
