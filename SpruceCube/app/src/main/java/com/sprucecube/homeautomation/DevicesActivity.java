@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.sprucecube.homeautomation.fragment.GenericFillButtonFragment;
 import com.sprucecube.homeautomation.fragment.ListRoomFragment;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
@@ -39,9 +41,6 @@ public class DevicesActivity extends AppCompatActivity
 
         Toolbar toolbar = HelperMethods.addToolbar(this);
 
-        //DONE, Adding GenericFill Button Methods here
-        HelperMethods.GenericFillButtonFragmentMethod(this, String.valueOf(nav_id), "Favourites", false);
-
         //This is needed
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -53,11 +52,10 @@ public class DevicesActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //NOT POSSIBLE, Add navigation items dynamically here
-
         //Bottom Navigation View
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_favourite);
 
         //DONE, Apparently this method is better
         sharedPreferences = getSharedPreferences(Params.PREFS, MODE_PRIVATE);
@@ -80,11 +78,6 @@ public class DevicesActivity extends AppCompatActivity
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -94,23 +87,23 @@ public class DevicesActivity extends AppCompatActivity
                 }
             };
 
-
     boolean BottomNavigationClickListener(MenuItem item)
     {
         switch (item.getItemId())
         {
             case R.id.navigation_favourite:
             {
-                //DONE, Make this the favourites tab
                 nav_id = String.valueOf(item.getItemId()); //NOTE, We get the item id here
-                HelperMethods.GenericFillButtonFragmentMethod(this, nav_id, "Favourites", true);
+
+                Fragment fragment = GenericFillButtonFragment.newInstance(nav_id, "Favourites");
+                HelperMethods.startFragmentMethod(this, fragment, false);
                 Log.d(TAG, "Favourite Tab created");
                 return true;
             }
             case R.id.navigation_rooms:
             {
                 ListRoomFragment listRoomFragment = new ListRoomFragment();
-                HelperMethods.startFragmentMethod(this, listRoomFragment, true);
+                HelperMethods.startFragmentMethod(this, listRoomFragment, false);
                 return true;
             }
             case R.id.navigation_analytics:

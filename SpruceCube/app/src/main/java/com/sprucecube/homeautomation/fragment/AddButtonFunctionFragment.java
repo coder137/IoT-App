@@ -3,6 +3,7 @@ package com.sprucecube.homeautomation.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.sprucecube.homeautomation.DevicesActivity;
 import com.sprucecube.homeautomation.R;
+import com.sprucecube.homeautomation.adapter.AddIconArrayAdapter;
+import com.sprucecube.homeautomation.classes.ImageItemClass;
 import com.sprucecube.homeautomation.misc.Params;
+
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -69,19 +76,46 @@ public class AddButtonFunctionFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveClick(view, activity);
+                saveClick(view);
             }
         });
+
+        //TODO, Add Stuff to spinner here
+        ArrayList<ImageItemClass> list = new ArrayList<>();
+        list.add(new ImageItemClass(R.mipmap.waterheater, "WATERHEATER"));
+        list.add(new ImageItemClass(R.mipmap.ac, "AC"));
+        list.add(new ImageItemClass(R.mipmap.fan, "FAN"));
+        list.add(new ImageItemClass(R.mipmap.light, "LIGHT"));
+        list.add(new ImageItemClass(R.mipmap.plugpoint, "PLUGPOINT"));
+        list.add(new ImageItemClass(R.mipmap.tv, "TV"));
+
+        Spinner addButtonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
+        AddIconArrayAdapter adapter = new AddIconArrayAdapter(activity, R.layout.add_icon_row, R.id.icon_name, list);
+        addButtonIconSpinner.setAdapter(adapter);
     }
 
     //TODO, Clean this function
-    void saveClick(View view, Activity activity)
+    void saveClick(View view)
     {
-        //We add shit here
+        Activity activity = getActivity();
+
         EditText urlText = activity.findViewById(R.id.edittext_get_button_url);
         String url = urlText.getText().toString();
+        if(url.trim().equals(""))
+        {
+            Toast.makeText(activity, "Button URL cannot be empty", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
         Spinner spinner = activity.findViewById(R.id.spinner_choose_button_function);
         String data = spinner.getSelectedItem().toString();
+
+        Spinner buttonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
+        ImageItemClass imageData = (ImageItemClass) buttonIconSpinner.getSelectedItem();
+        //TODO, Remove if needed
+        Log.d(TAG, imageData.getText());
+        Log.d(TAG, String.valueOf(imageData.getImageId()));
+        Log.d(TAG, identification_id);
 
         //NOTE, We HAVE TO POPBACK STACK BEFORE Shared Preferences
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -94,11 +128,7 @@ public class AddButtonFunctionFragment extends Fragment {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Params.PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(identification_id, url+":"+data);
+        editor.putString(identification_id, url+":"+data+":"+imageData.getImageId());
         editor.apply(); //we want it to block the thread (use apply if you want it async)
-
-        //TEST
-        Log.d(TAG, identification_id);
-        Log.d(TAG, url+":"+data);
     }
 }

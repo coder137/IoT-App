@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sprucecube.homeautomation.R;
+import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
 
-
+/**
+ * Cleaned: 25.06.2018
+ */
 public class GenericFillButtonFragment extends Fragment {
 
     private static final String TAG = "GenericFillButtonFrag";
@@ -77,86 +80,71 @@ public class GenericFillButtonFragment extends Fragment {
     {
         for(int i=1;i<=9;i++)
         {
-            final int button_id = getResources().getIdentifier("button"+i, "id", activity.getPackageName());
-
+            //final int button_id = getResources().getIdentifier("button"+i, "id", activity.getPackageName());
+            int button_id = HelperMethods.getButtonId((AppCompatActivity) activity, i);
             if(button_id == 0)
             {
                 Log.wtf(TAG, "Button ID is 0");
             }
-            else
-            {
-                Log.d(TAG, "Button ID: "+button_id);
-            }
-
-            //get the current nav_id
-            String data = nav_id+":"+button_id;
-            Log.d(TAG, data+":"+i);
 
             Button genericButton = activity.findViewById(button_id);
 
+            boolean updated = HelperMethods.setButtonArtifacts(nav_id, button_id, sharedPreferences, genericButton);
+            Log.d(TAG, String.valueOf(updated));
+
             //Set GenericButton Long Click
-            genericButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view)
-                {
-                    //DONE, Attach your action here
-                    onLongUserButtonClick(button_id);
-                    return true;
-                }
-            });
+            setLongClickButtonAction(genericButton, button_id);
 
             //Set GenericButton Click
-            genericButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onUserButtonClick(view, sharedPreferences);
-                }
-            });
-
-
-            //TODO, Get data from the file and set the data here
-            String buttonData = sharedPreferences.getString(data,null);
-            if(buttonData != null)
-            {
-                genericButton.setText(buttonData.replace(":", "\n"));
-                Log.d(TAG, "Attached generic Button on: " +i);
-            }
-
+            setClickButtonAction(genericButton, sharedPreferences);
         }
-        //EOFunction
     }
 
+
+    void setLongClickButtonAction(Button genericButton, final int button_id)
+    {
+        genericButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                //DONE, Attach your action here
+                onLongUserButtonClick(button_id);
+                return true;
+            }
+        });
+    }
 
     /*
     Used to modify the contents of a button
      */
     void onLongUserButtonClick(int button_id)
     {
-//        Intent intent = new Intent(getActivity(), AddButtonFunctionActivity.class);
-//        Bundle args = new Bundle();
-//        args.putString(Params.IDENTIFICATION_ID, nav_id+":"+button_id);
-//        intent.putExtra(Params.INTENT_BUNDLE, args);
-//        startActivity(intent);
-
-        //TODO, Add a fragment here, AddButtonFunctionFragment
         AddButtonFunctionFragment addButtonFunctionFragment = AddButtonFunctionFragment.newInstance(nav_id+":"+button_id);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_view, addButtonFunctionFragment).addToBackStack(Params.BACK_STACK).commit();
+        HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), addButtonFunctionFragment, true);
+    }
 
+
+    void setClickButtonAction(Button genericButton, final SharedPreferences sharedPreferences)
+    {
+        genericButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onUserButtonClick(view, sharedPreferences);
+            }
+        });
     }
 
     /*
     Check if the data is present inside the file, if not return null
      */
-    //TODO, Write this function
     void onUserButtonClick(View view, SharedPreferences preferences)
     {
         Log.d(TAG, "onUserButtonClick");
 
         int id = view.getId();
         Log.d(TAG, "ButtonId: "+id);
-        String name = getResources().getResourceEntryName(id);
 
+        //String name = getResources().getResourceEntryName(id);
         //SharedPreferences preferences = getSharedPreferences(Params.PREFS, MODE_PRIVATE);
 
         Log.d(TAG, nav_id+":"+id);

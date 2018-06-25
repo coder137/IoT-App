@@ -16,8 +16,8 @@ Current Version: Alpha Build 3
 - [x] Add icon functionality to Rooms
 - [ ] (MIGHT NOT IMPLEMENT) Modify icon functionality to Rooms
 - [x] Delete icon functionality to Rooms added with DeleteRoom Button
-- [ ] Add icon functionality to Button (Change to ImageButton)
-- [ ] Modify icon functionality to Button
+- [x] Add icon functionality to Button (Change to ImageButton)
+- [x] Modify icon functionality to Button
 - [ ] Add Settings screen functionality (To add static IP Address)
 - [ ] Add HTTP GET/POST Request to Button click
 

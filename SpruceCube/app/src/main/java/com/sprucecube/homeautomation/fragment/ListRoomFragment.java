@@ -140,7 +140,10 @@ public class ListRoomFragment extends Fragment {
 
         String roomName = textFromRoomCard.getText().toString();
         Log.d(TAG, "Button Clicked: "+roomName);
-        HelperMethods.GenericFillButtonFragmentMethod((AppCompatActivity) getActivity(), roomName, roomName, true);
+
+        //HelperMethods.GenericFillButtonFragmentMethod((AppCompatActivity) getActivity(), roomName, roomName, true);
+        Fragment fragment = GenericFillButtonFragment.newInstance(roomName, roomName);
+        HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), fragment, true);
     }
 
     ///Own Function Declarations here

@@ -1,5 +1,12 @@
 ## BUILD 4
 
+#### 25.06.2018
+
+1. Added icon for Buttons
+2. Modify icon for Buttons
+3. Made UI Changes to `fragment_add_button_function`
+4. Added `setSelectedItemId` to BottomNavigation
+
 #### 21.06.18
 
 1. Bug while deleting images from Room

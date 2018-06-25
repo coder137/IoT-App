@@ -1,9 +1,8 @@
 package com.sprucecube.homeautomation;
 
 import android.content.Intent;
-import android.support.constraint.solver.widgets.Helper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
