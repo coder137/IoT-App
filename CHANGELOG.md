@@ -1,5 +1,11 @@
 ## BUILD 4
 
+#### 03.07.2018
+
+1. Changed Light Theme to Dark Theme in AndroidManifest
+2. Changed Dimming to Control
+3. Theme Material Added to `content_devices.xml` (base layout for buttons) 
+
 #### 25.06.2018
 
 1. Added icon for Buttons
@@ -31,7 +37,7 @@
 3. Modify icon for Buttons
 4. `AddButtonFunctionFragment` add check for `EditText` if blank
 
-> Cleanups TODO
+> Clean-ups TODO
 
 1. AddRoomActivity
 2. ModifyRoomActivity

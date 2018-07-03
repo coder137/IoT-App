@@ -19,7 +19,7 @@
     <string name="add_room">Add Room</string>
     <string-array name="button_functions">
         <item>Switch</item>
-        <item>Dimming</item>
+        <item>Control</item>
     </string-array>
 
 </resources>
