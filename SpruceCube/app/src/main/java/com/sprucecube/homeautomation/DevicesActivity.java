@@ -1,5 +1,6 @@
 package com.sprucecube.homeautomation;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -161,9 +162,10 @@ public class DevicesActivity extends AppCompatActivity
             //TODO, Change this to analytics
             case R.id.action_settings:
             {
-                //TODO, Create a settings activity,
-                //TODO, Add all the settings to the Preferences
-                Toast.makeText(this, "Settings has been clicked", Toast.LENGTH_SHORT).show();
+                //DONE, Create a settings activity,
+                //DONE, Add all the settings to the Preferences
+                Intent settingsActivity = new Intent(this, SettingsActivity.class);
+                startActivity(settingsActivity);
                 return true;
             }
             default:

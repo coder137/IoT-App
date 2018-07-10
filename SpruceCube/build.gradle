@@ -29,6 +29,7 @@ task clean(type: Delete) {
 ext {
     //android
     supportLibraryVersion = '26.1.0'
+    okHttpVersion = '3.10.0'
 //    roomVersion = '1.0.0'
 //    archLifecycleVersion = '1.1.0'
 }

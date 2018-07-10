@@ -13,6 +13,7 @@ public class Params
 
     //Preferences
     public static final String PREFS = "my_prefs";
+    public static final String SETTINGS = "my_settings";
 
     //Filenames
     public static final String ROOM_FILE = "roomfile.txt";

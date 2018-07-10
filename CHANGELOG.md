@@ -1,3 +1,12 @@
+## BUILD 5
+
+### 10.07.2018
+
+1. Created SettingsScreen -> Add HOST IP Address
+2. Added `HTTP_POST` to `GenericFillButtonFragment`
+3. Wrote HTTPMethods Library
+4. Updated Gradle: okHttp Library 
+
 ## BUILD 4
 
 #### 03.07.2018
@@ -29,18 +38,6 @@
 4. Added Icon for ListRoom
 5. Added Delete Icon for ListRoom with Delete Room param
 6. Changed activity_modify_room.xml
-
-> TODO
-
-1. Modify ListRooms (ICON Functionality)
-2. Attach icon for Buttons
-3. Modify icon for Buttons
-4. `AddButtonFunctionFragment` add check for `EditText` if blank
-
-> Clean-ups TODO
-
-1. AddRoomActivity
-2. ModifyRoomActivity
 
 ## BUILD 3
 

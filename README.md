@@ -1,6 +1,11 @@
 # TODO
 
-Current Version: Alpha Build 3
+Current Version: Alpha Build 4
+
+> Clean-ups TODO
+
+1. AddRoomActivity
+2. ModifyRoomActivity
 
 ### Bottom Navigation
 
@@ -18,8 +23,8 @@ Current Version: Alpha Build 3
 - [x] Delete icon functionality to Rooms added with DeleteRoom Button
 - [x] Add icon functionality to Button (Change to ImageButton)
 - [x] Modify icon functionality to Button
-- [ ] Add Settings screen functionality (To add static IP Address)
-- [ ] Add HTTP GET/POST Request to Button click
+- [x] Add Settings screen functionality (To add static IP Address)
+- [x] Add HTTP GET/POST Request to Button click
 
 ### Updates
 
