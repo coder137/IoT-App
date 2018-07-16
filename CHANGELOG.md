@@ -1,3 +1,12 @@
+## BUILD 6
+
+### 16.07.2018
+
+1. Added CONTROL and SWITCH actions to `GenericFillButtonFragment`
+2. Wrote an AsyncHTTP Library for HTTP tasks
+3. Converted `DimmerDialogActivity` Activity -> Dialog (Manifest options)
+4. Updated `nav_header_devices.xml` text
+
 ## BUILD 5
 
 ### 10.07.2018

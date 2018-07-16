@@ -3,12 +3,9 @@ package com.sprucecube.homeautomation.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -20,16 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sprucecube.homeautomation.DimmerDialogActivity;
 import com.sprucecube.homeautomation.R;
-import com.sprucecube.homeautomation.misc.HTTPMethods;
+import com.sprucecube.homeautomation.misc.AsyncHTTP;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import java.util.Arrays;
 
 /**
  * Cleaned: 25.06.2018
@@ -168,8 +162,6 @@ public class GenericFillButtonFragment extends Fragment {
         else
         {
             Log.d(TAG, "We got the data==> " +data);
-            //TODO, Attach the HTTP Action to this, [IMPORTANT]
-            //DONE, Form the URL here (Read from SharedPreferences)
 
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
             String ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
@@ -180,63 +172,47 @@ public class GenericFillButtonFragment extends Fragment {
                 return ;
             }
 
-            //TODO, Different functionality for SWITCH and DIMMER HERE
+            //DONE, Different functionality for SWITCH and DIMMER HERE
             String[] splitData = data.split(":");
-            String url = "http://"+ip_address+"/"+splitData[0];
+            Log.d(TAG, Arrays.toString(splitData));
 
-            Log.d(TAG, url);
-
-            //This is 1 METHOD
-            PostAsync postAsync = new PostAsync();
-            postAsync.execute(url);
-
-            //This is 2 METHOD
-//            HTTPMethods.postRequestEnqueue(url, new Callback()
-//            {
-//                @Override
-//                public void onFailure(Call call, IOException e)
-//                {
-//                    //Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-//                    Log.wtf(TAG, "ERROR!!!");
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException
-//                {
-//                    if(response.isSuccessful())
-//                    {
-//                        //Toast.makeText(getActivity(), response.body().string(), Toast.LENGTH_SHORT).show();
-//                        Log.d(TAG, response.body().string());
-//                    }
-//                }
-//            });
-
-
-        }
-    }
-
-    class PostAsync extends AsyncTask<String, Void, String>
-    {
-
-        @Override
-        protected String doInBackground(String... urls)
-        {
-            String data = HTTPMethods.postRequest(urls[0]);
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            super.onPostExecute(s);
-            Log.d(TAG, String.valueOf(s));
-            if(s == null)
+            if(splitData[1].equals(Params.CONTROL_ACTION))
             {
-                Toast.makeText(getActivity(), "Request: Timeout", Toast.LENGTH_SHORT).show();
+                //DONE, Start DimmerDialogActivity here
+                Log.d(TAG, Params.CONTROL_ACTION);
+
+                Intent dimmerIntent = new Intent(getActivity(), DimmerDialogActivity.class);
+                dimmerIntent.putExtra(Params.PIN_NUM, splitData[0]);
+                startActivity(dimmerIntent);
             }
-            else
+            else if(splitData[1].equals(Params.SWITCH_ACTION))
             {
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                //DONE, Do switch stuff here
+                Log.d(TAG, Params.SWITCH_ACTION);
+
+                String url = "http://"+ip_address+"/"+splitData[0];
+                Log.d(TAG, url);
+
+                //This is 1 METHOD
+                //PostAsync postAsync = new PostAsync(getActivity());
+                //postAsync.execute(url);
+
+                AsyncHTTP asyncHTTP = new AsyncHTTP(AsyncHTTP.POST_METHOD, new AsyncHTTP.CallbackReceived() {
+                    @Override
+                    public void onResponseReceived(String result)
+                    {
+                        if(result == null)
+                        {
+                            Toast.makeText(getActivity(), "Request: Timeout", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                asyncHTTP.execute(url);
             }
         }
     }

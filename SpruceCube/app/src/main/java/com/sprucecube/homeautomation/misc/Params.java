@@ -9,6 +9,12 @@ public class Params
     public static final String BUTTON_ID = "button_id";
     public static final String IDENTIFICATION_ID = "identification_id";
 
+    //genericFillButtonFragment #ButtonAction
+    public static final String SWITCH_ACTION = "Switch";
+    public static final String CONTROL_ACTION = "Control";
+    public static final String PIN_NUM = "pin_num";
+
+
     public static final String INTENT_BUNDLE = "intent_bundle";
 
     //Preferences

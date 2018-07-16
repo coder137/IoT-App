@@ -7,6 +7,13 @@ Current Version: Alpha Build 4
 1. AddRoomActivity
 2. ModifyRoomActivity
 
+## Current Tasklist
+
+- [ ] Login Screen with dummy users
+- [x] Add Custom Seekbar dialog box for Dimmer functionality 
+
+## Earlier Build Tasklist
+
 ### Bottom Navigation
 
 - [x] Change Notification to Analytics
