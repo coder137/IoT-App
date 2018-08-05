@@ -56,6 +56,14 @@ public class HelperMethods
         }
     }
 
+    public static void startFragmentMethod(AppCompatActivity activity, Fragment fragment, String backStackString)
+    {
+        Log.d(TAG, "startFragmentMethod: Overload backStackString");
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.fragment_view, fragment).addToBackStack(backStackString).commit();
+    }
+
     //TODO, Clean this function up
     public static void updateButtonTags(AppCompatActivity activity, String nav_id, SharedPreferences sharedPreferences)
     {
@@ -82,13 +90,16 @@ public class HelperMethods
     {
         //get the current nav_id
         String identification = nav_id+":"+button_id;
+        String button_name_identification = identification+":"+Params.TAG_NAME;
+
         Log.d(TAG, identification);
         String buttonData = sharedPreferences.getString(identification,null);
-        if(buttonData != null)
+        String buttonNameData = sharedPreferences.getString(button_name_identification, null);
+        if(buttonData != null || buttonNameData != null)
         {
             Log.d(TAG, buttonData);
             String[] buttonSpecificData = buttonData.trim().split(":");
-            genericButton.setText(buttonSpecificData[0]+"\n"+buttonSpecificData[1]);
+            genericButton.setText(buttonNameData+"\n"+buttonSpecificData[1]);
             //TODO, This might be NULL
             genericButton.setCompoundDrawablesWithIntrinsicBounds(Integer.parseInt(buttonSpecificData[2]),0, 0, 0);
             return true;

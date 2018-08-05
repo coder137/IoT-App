@@ -1,3 +1,15 @@
+## BUILD 7
+
+### 05.08.2018
+
+1. Change the `DimmerDialogActivity` from 5-128 to 100-0 (Default: 0-100)
+2. Added a Name button tag to `add_button_function.xml`
+3. Made improvements to the back stack (updated `DevicesActivity`)
+4. Updates: `AddButtonFunctionFragment`
+5. Updates: `GenericFillButtonFragment`
+6. Overload: `HelperMethod` -> `startFragmentMethod`
+7. Improvement: `HelperMethod` -> `updateButtonTags`
+
 ## BUILD 6
 
 ### 16.07.2018

@@ -9,6 +9,15 @@
     tools:context="com.sprucecube.homeautomation.fragment.AddButtonFunctionFragment">
 
     <EditText
+        android:id="@+id/edittext_get_button_name"
+        android:hint="Insert Button Name here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="30dp"
+        />
+
+    <EditText
         android:id="@+id/edittext_get_button_url"
         android:hint="Insert Button URL here"
         android:layout_width="wrap_content"

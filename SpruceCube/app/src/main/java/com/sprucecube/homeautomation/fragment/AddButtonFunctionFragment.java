@@ -99,11 +99,14 @@ public class AddButtonFunctionFragment extends Fragment {
     {
         Activity activity = getActivity();
 
+        EditText nameText = activity.findViewById(R.id.edittext_get_button_name);
+        String name = nameText.getText().toString();
+
         EditText urlText = activity.findViewById(R.id.edittext_get_button_url);
         String url = urlText.getText().toString();
-        if(url.trim().equals(""))
+        if(url.trim().equals("") || name.trim().equals(""))
         {
-            Toast.makeText(activity, "Button URL cannot be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Button NAME or URL cannot be empty", Toast.LENGTH_SHORT).show();
             return ;
         }
 
@@ -112,6 +115,7 @@ public class AddButtonFunctionFragment extends Fragment {
 
         Spinner buttonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
         ImageItemClass imageData = (ImageItemClass) buttonIconSpinner.getSelectedItem();
+
         //TODO, Remove if needed
         Log.d(TAG, imageData.getText());
         Log.d(TAG, String.valueOf(imageData.getImageId()));
@@ -129,6 +133,7 @@ public class AddButtonFunctionFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(identification_id, url+":"+data+":"+imageData.getImageId());
+        editor.putString(identification_id+":"+Params.TAG_NAME, name);
         editor.apply(); //we want it to block the thread (use apply if you want it async)
     }
 }

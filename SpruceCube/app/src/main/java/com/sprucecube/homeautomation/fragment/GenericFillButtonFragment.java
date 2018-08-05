@@ -126,7 +126,8 @@ public class GenericFillButtonFragment extends Fragment {
     void onLongUserButtonClick(int button_id)
     {
         AddButtonFunctionFragment addButtonFunctionFragment = AddButtonFunctionFragment.newInstance(nav_id+":"+button_id);
-        HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), addButtonFunctionFragment, true);
+        //HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), addButtonFunctionFragment, true);
+        HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), addButtonFunctionFragment, Params.FAV_STACK);
     }
 
 

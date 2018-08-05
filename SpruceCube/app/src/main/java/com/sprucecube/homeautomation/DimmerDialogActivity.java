@@ -52,7 +52,9 @@ public class DimmerDialogActivity extends AppCompatActivity {
         int progress = seekBar.getProgress();
 
         //DONE, Convert from 0-100 from 5-128
-        int conversion = (int) (progress*1.23 +5);
+
+        // int conversion = (int) (progress*1.23 +5);
+        int conversion = 100 - progress;
         Log.d(TAG, "Progress: "+progress);
         Log.d(TAG, "Conversion: "+conversion);
 
