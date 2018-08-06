@@ -154,8 +154,9 @@ public class GenericFillButtonFragment extends Fragment {
         //String name = getResources().getResourceEntryName(id);
         //SharedPreferences preferences = getSharedPreferences(Params.PREFS, MODE_PRIVATE);
 
-        Log.d(TAG, nav_id+":"+id);
-        String data = preferences.getString(nav_id+":"+id, null);
+        String identification_id = nav_id+":"+id;
+        Log.d(TAG, identification_id);
+        String data = preferences.getString(identification_id, null);
         if(data == null)
         {
            onLongUserButtonClick(id);
@@ -164,34 +165,39 @@ public class GenericFillButtonFragment extends Fragment {
         {
             Log.d(TAG, "We got the data==> " +data);
 
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
-            String ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
-            
-            if(ip_address.equals(""))
-            {
-                Toast.makeText(getActivity(), "Fill Settings screen", Toast.LENGTH_SHORT).show();
-                return ;
-            }
+//            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
+//            String ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
+//
+//            if(ip_address.equals(""))
+//            {
+//                Toast.makeText(getActivity(), "Fill Settings screen", Toast.LENGTH_SHORT).show();
+//                return ;
+//            }
 
+            String pin_type = preferences.getString(identification_id+":"+Params.TAG_PIN_TYPE, null);
+            String url = preferences.getString(identification_id+":"+Params.TAG_URL, null);
             //DONE, Different functionality for SWITCH and DIMMER HERE
-            String[] splitData = data.split(":");
-            Log.d(TAG, Arrays.toString(splitData));
+//            String[] splitData = data.split(":");
+//            Log.d(TAG, Arrays.toString(splitData));
 
-            if(splitData[1].equals(Params.CONTROL_ACTION))
+            if(pin_type.equals(Params.CONTROL_ACTION))
             {
                 //DONE, Start DimmerDialogActivity here
                 Log.d(TAG, Params.CONTROL_ACTION);
 
                 Intent dimmerIntent = new Intent(getActivity(), DimmerDialogActivity.class);
-                dimmerIntent.putExtra(Params.PIN_NUM, splitData[0]);
+
+                //httpL//192.168.29.100/DIMMING
+                dimmerIntent.putExtra(Params.PIN_DIMMING_URL, url);
                 startActivity(dimmerIntent);
             }
-            else if(splitData[1].equals(Params.SWITCH_ACTION))
+            else if(pin_type.equals(Params.SWITCH_ACTION))
             {
                 //DONE, Do switch stuff here
                 Log.d(TAG, Params.SWITCH_ACTION);
 
-                String url = "http://"+ip_address+"/"+splitData[0];
+                //String url = "http://"+ip_address+"/"+splitData[0];
+                //http://192.186.29.100/LED
                 Log.d(TAG, url);
 
                 //This is 1 METHOD

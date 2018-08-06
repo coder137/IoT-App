@@ -111,7 +111,7 @@ public class AddButtonFunctionFragment extends Fragment {
         }
 
         Spinner spinner = activity.findViewById(R.id.spinner_choose_button_function);
-        String data = spinner.getSelectedItem().toString();
+        String pin_type = spinner.getSelectedItem().toString();
 
         Spinner buttonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
         ImageItemClass imageData = (ImageItemClass) buttonIconSpinner.getSelectedItem();
@@ -132,8 +132,15 @@ public class AddButtonFunctionFragment extends Fragment {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Params.PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(identification_id, url+":"+data+":"+imageData.getImageId());
+        //TODO, Clean this later
+        editor.putString(identification_id, url+":"+pin_type+":"+imageData.getImageId());
+
+        //TODO, This is VERY IMPORTANT
+        editor.putInt(identification_id+":"+Params.TAG_IMAGE_ID, imageData.getImageId());
+        editor.putString(identification_id+":"+Params.TAG_PIN_TYPE, pin_type);
+        editor.putString(identification_id+":"+Params.TAG_URL, url);
         editor.putString(identification_id+":"+Params.TAG_NAME, name);
+
         editor.apply(); //we want it to block the thread (use apply if you want it async)
     }
 }

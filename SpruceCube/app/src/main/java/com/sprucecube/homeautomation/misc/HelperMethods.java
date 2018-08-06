@@ -86,22 +86,26 @@ public class HelperMethods
         return activity.getResources().getIdentifier("button" + i, "id", activity.getPackageName());
     }
 
+    //TODO, CLEAN THIS
     public static boolean setButtonArtifacts(String nav_id, int button_id, SharedPreferences sharedPreferences, Button genericButton)
     {
         //get the current nav_id
         String identification = nav_id+":"+button_id;
-        String button_name_identification = identification+":"+Params.TAG_NAME;
 
         Log.d(TAG, identification);
-        String buttonData = sharedPreferences.getString(identification,null);
-        String buttonNameData = sharedPreferences.getString(button_name_identification, null);
-        if(buttonData != null || buttonNameData != null)
+        //String buttonData = sharedPreferences.getString(identification,null);
+        String buttonNameData = sharedPreferences.getString(identification+":"+Params.TAG_NAME, null);
+        int buttonImageData = sharedPreferences.getInt(identification+":"+Params.TAG_IMAGE_ID, 0);
+
+        if(buttonNameData != null)
         {
-            Log.d(TAG, buttonData);
-            String[] buttonSpecificData = buttonData.trim().split(":");
-            genericButton.setText(buttonNameData+"\n"+buttonSpecificData[1]);
+            Log.d(TAG, buttonNameData);
+            //String[] buttonSpecificData = buttonData.trim().split(":");
+            genericButton.setText(buttonNameData);
+
             //TODO, This might be NULL
-            genericButton.setCompoundDrawablesWithIntrinsicBounds(Integer.parseInt(buttonSpecificData[2]),0, 0, 0);
+            Log.d(TAG, String.valueOf(buttonImageData));
+            genericButton.setCompoundDrawablesWithIntrinsicBounds(buttonImageData,0, 0, 0);
             return true;
         }
         return false;

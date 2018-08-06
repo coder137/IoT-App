@@ -21,7 +21,8 @@ public class DimmerDialogActivity extends AppCompatActivity {
 
     private static final String TAG = "DimmerDialogAct";
 
-    String dimmerPin, ip_address;
+    //String dimmerPin, ip_address;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,11 +35,12 @@ public class DimmerDialogActivity extends AppCompatActivity {
         getWindow().setLayout((6*width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         Intent intent = getIntent();
-        dimmerPin = intent.getStringExtra(Params.PIN_NUM);
-        Log.d(TAG, dimmerPin);
+        url = intent.getStringExtra(Params.PIN_DIMMING_URL);
+        //dimmerPin = intent.getStringExtra(Params.PIN_NUM);
+        //Log.d(TAG, dimmerPin);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
-        ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
+        //SharedPreferences sharedPreferences = getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
+        //ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
     }
 
     public void cancelDimmerClick(View view)
@@ -59,7 +61,9 @@ public class DimmerDialogActivity extends AppCompatActivity {
         Log.d(TAG, "Conversion: "+conversion);
 
         //DONE, Form the URL here and send it
-        String url = "http://"+ip_address+"/DIMMING?"+dimmerPin+"="+conversion;
+        ///String url = "http://"+ip_address+"/DIMMING?"+dimmerPin+"="+conversion;
+        //http://192.168.29.100/DIMMING?pin1=
+        url = url + conversion;
         Log.d(TAG, url);
 
         AsyncHTTP asyncHTTP = new AsyncHTTP(POST_METHOD, new AsyncHTTP.CallbackReceived() {
@@ -79,6 +83,5 @@ public class DimmerDialogActivity extends AppCompatActivity {
 
         asyncHTTP.execute(url);
         finish();
-
     }
 }

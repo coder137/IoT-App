@@ -15,14 +15,20 @@ public class Params
     //genericFillButtonFragment #ButtonAction
     public static final String SWITCH_ACTION = "Switch";
     public static final String CONTROL_ACTION = "Control";
+
     public static final String PIN_NUM = "pin_num";
+    public static final String PIN_DIMMING_URL = "pin_dimming_url";
 
     public static final String INTENT_BUNDLE = "intent_bundle";
 
     //Preferences
     public static final String PREFS = "my_prefs";
     public static final String SETTINGS = "my_settings";
+
     public static final String TAG_NAME = "name";
+    public static final String TAG_URL = "url";
+    public static final String TAG_PIN_TYPE = "pin_type";
+    public static final String TAG_IMAGE_ID = "image_id";
 
     //Filenames
     public static final String ROOM_FILE = "roomfile.txt";
