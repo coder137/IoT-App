@@ -18,6 +18,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.sprucecube.homeautomation.DevicesActivity;
 import com.sprucecube.homeautomation.R;
 import com.sprucecube.homeautomation.adapter.AddIconArrayAdapter;
@@ -92,6 +97,43 @@ public class AddButtonFunctionFragment extends Fragment {
         Spinner addButtonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
         AddIconArrayAdapter adapter = new AddIconArrayAdapter(activity, R.layout.add_icon_row, R.id.icon_name, list);
         addButtonIconSpinner.setAdapter(adapter);
+
+        // TODO, Make this simpler
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(Params.SETTINGS, MODE_PRIVATE);
+        String host_ip = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
+        String app_id = sharedPreferences.getString(String.valueOf(R.id.settings_app_id), "");
+
+        if(host_ip.equals("") || app_id.equals(""))
+        {
+            Toast.makeText(activity, "Please fill your settings tab", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+
+            // TODO, Add Parse Server connection here
+            // NOTE, WORKS
+            Parse.initialize(new Parse.Configuration.Builder(activity)
+                    .applicationId(app_id.trim())
+                    .server("http://"+host_ip.trim()+":1337/parse/")
+                    .build());
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Random");
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject object, ParseException e) {
+                    if (e == null)
+                    {
+                        Log.d(TAG, "PARSE SERVER, Success");
+                        Log.d(TAG, object.getString("Name") );
+                    }
+                    else
+                    {
+                        Log.d(TAG, "PARSE SERVER something went wrong");
+                    }
+                }
+            });
+
+        }
     }
 
     //TODO, Clean this function

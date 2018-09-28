@@ -38,7 +38,38 @@
 
     <TextView
         android:id="@+id/settings_info"
+        android:layout_marginTop="10dp"
+        android:text="Test"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
         android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+
+            android:layout_marginLeft="30dp"
+            android:text="Enter AppId" />
+
+        <EditText
+            android:id="@+id/settings_app_id"
+            android:layout_marginLeft="20dp"
+            android:hint="eg: myAppId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/settings_app_id_info"
+        android:layout_marginTop="10dp"
         android:text="Test"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
