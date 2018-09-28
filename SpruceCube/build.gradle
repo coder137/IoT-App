@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -28,8 +29,10 @@ task clean(type: Delete) {
 
 ext {
     //android
-    supportLibraryVersion = '26.1.0'
     okHttpVersion = '3.10.0'
+    androidParseClientVersion = '1.18.5'
+    supportVersion26 = '26.1.0'
+    supportVersion27 = '27.1.1'
 //    roomVersion = '1.0.0'
 //    archLifecycleVersion = '1.1.0'
 }
