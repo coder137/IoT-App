@@ -3,7 +3,6 @@ package com.sprucecube.homeautomation.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,13 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -30,6 +29,7 @@ import com.sprucecube.homeautomation.classes.ImageItemClass;
 import com.sprucecube.homeautomation.misc.Params;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -109,6 +109,8 @@ public class AddButtonFunctionFragment extends Fragment {
         }
         else
         {
+            final Spinner addDevicesSpinner = activity.findViewById(R.id.spinner_add_devices);
+            final ArrayList<String> devicesList = new ArrayList<>();
 
             // TODO, Add Parse Server connection here
             // NOTE, WORKS
@@ -117,18 +119,32 @@ public class AddButtonFunctionFragment extends Fragment {
                     .server("http://"+host_ip.trim()+":1337/parse/")
                     .build());
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Random");
-            query.getFirstInBackground(new GetCallback<ParseObject>() {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Devices");
+
+            query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
-                public void done(ParseObject object, ParseException e) {
-                    if (e == null)
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if(e == null)
                     {
-                        Log.d(TAG, "PARSE SERVER, Success");
-                        Log.d(TAG, object.getString("Name") );
+                        for (ParseObject o:
+                             objects)
+                        {
+                            Log.d(TAG, o.getObjectId());
+                            devicesList.add(o.getString("local_ip"));
+                        }
+
+                        // TODO, Now set the adapter
+                        ArrayAdapter<String> spinnerDevicesAdapter = new ArrayAdapter<>(
+                                getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item,
+                                devicesList
+                        );
+                        addDevicesSpinner.setAdapter(spinnerDevicesAdapter);
                     }
                     else
                     {
-                        Log.d(TAG, "PARSE SERVER something went wrong");
+                        //TODO, Error Toast here
+                        e.printStackTrace();
                     }
                 }
             });

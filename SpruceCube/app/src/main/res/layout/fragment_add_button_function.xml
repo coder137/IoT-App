@@ -27,6 +27,15 @@
         />
 
     <Spinner
+        android:id="@+id/spinner_add_devices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+
+        android:layout_marginTop="30dp"
+        />
+
+    <Spinner
         android:id="@+id/spinner_choose_button_function"
         android:prompt="@string/button_function_prompt"
         android:entries="@array/button_functions"
@@ -54,14 +63,5 @@
 
         android:layout_marginTop="50dp"
         />
-
-    <TextView
-        android:layout_marginTop="30dp"
-        android:id="@+id/add_button_status"
-        android:text="Default"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
