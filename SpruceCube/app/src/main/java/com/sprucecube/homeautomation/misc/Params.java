@@ -22,7 +22,10 @@ public class Params
     //Preferences
     public static final String PREFS = "my_prefs";
     public static final String SETTINGS = "my_settings";
+
+    // TODO, Find what this is
     public static final String TAG_NAME = "name";
+    public static final String DEVICE_OBJECT ="device_object";
 
     //Filenames
     public static final String ROOM_FILE = "roomfile.txt";

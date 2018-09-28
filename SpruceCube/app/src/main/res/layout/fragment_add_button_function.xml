@@ -17,15 +17,6 @@
         android:layout_marginTop="30dp"
         />
 
-    <EditText
-        android:id="@+id/edittext_get_button_url"
-        android:hint="Insert Button URL here"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="30dp"
-        />
-
     <Spinner
         android:id="@+id/spinner_add_devices"
         android:layout_width="wrap_content"

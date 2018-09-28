@@ -41,6 +41,8 @@ public class AddButtonFunctionFragment extends Fragment {
     private static final String IDEN_ID = "iden_id";
     String identification_id;
 
+    ArrayList<String> devicesObjectId = null;
+
     public AddButtonFunctionFragment() {
         // Required empty public constructor
     }
@@ -112,6 +114,11 @@ public class AddButtonFunctionFragment extends Fragment {
             final Spinner addDevicesSpinner = activity.findViewById(R.id.spinner_add_devices);
             final ArrayList<String> devicesList = new ArrayList<>();
 
+            if(devicesObjectId == null)
+            {
+                devicesObjectId = new ArrayList<>();
+            }
+
             // TODO, Add Parse Server connection here
             // NOTE, WORKS
             Parse.initialize(new Parse.Configuration.Builder(activity)
@@ -131,6 +138,7 @@ public class AddButtonFunctionFragment extends Fragment {
                         {
                             Log.d(TAG, o.getObjectId());
                             devicesList.add(o.getString("local_ip"));
+                            devicesObjectId.add(o.getObjectId());
                         }
 
                         // TODO, Now set the adapter
@@ -160,16 +168,20 @@ public class AddButtonFunctionFragment extends Fragment {
         EditText nameText = activity.findViewById(R.id.edittext_get_button_name);
         String name = nameText.getText().toString();
 
-        EditText urlText = activity.findViewById(R.id.edittext_get_button_url);
-        String url = urlText.getText().toString();
-        if(url.trim().equals("") || name.trim().equals(""))
+        if(name.trim().equals(""))
         {
-            Toast.makeText(activity, "Button NAME or URL cannot be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Button NAME cannot be empty", Toast.LENGTH_SHORT).show();
             return ;
         }
 
-        Spinner spinner = activity.findViewById(R.id.spinner_choose_button_function);
-        String data = spinner.getSelectedItem().toString();
+        Spinner addDeviceSpinner = activity.findViewById(R.id.spinner_add_devices);
+        String deviceData = addDeviceSpinner.getSelectedItem().toString();
+        int devicePosition = addDeviceSpinner.getSelectedItemPosition();
+        Log.d(TAG, "DeviceObject: "+devicesObjectId.get(devicePosition));
+        Log.d(TAG, "DeviceName: "+deviceData);
+
+        Spinner buttonFunctionSpinner = activity.findViewById(R.id.spinner_choose_button_function);
+        String data = buttonFunctionSpinner.getSelectedItem().toString();
 
         Spinner buttonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
         ImageItemClass imageData = (ImageItemClass) buttonIconSpinner.getSelectedItem();
@@ -190,7 +202,13 @@ public class AddButtonFunctionFragment extends Fragment {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(Params.PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(identification_id, url+":"+data+":"+imageData.getImageId());
+        // FIXME, Dirty Fix
+//        editor.putString(identification_id, url+":"+data+":"+imageData.getImageId());
+        editor.putString(identification_id, ""+":"+data+":"+imageData.getImageId());
+
+        // TODO, Add the device object here, TEST
+        editor.putString(identification_id+":"+Params.DEVICE_OBJECT, devicesObjectId.get(devicePosition));
+
         editor.putString(identification_id+":"+Params.TAG_NAME, name);
         editor.apply(); //we want it to block the thread (use apply if you want it async)
     }
