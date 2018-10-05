@@ -8,6 +8,16 @@
     android:gravity="center|top"
     tools:context="com.sprucecube.homeautomation.fragment.AddButtonFunctionFragment">
 
+    <TextView
+        android:id="@+id/addbutton_status"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="30dp"
+        />
+
     <EditText
         android:id="@+id/edittext_get_button_name"
         android:hint="Insert Button Name here"
@@ -30,12 +40,24 @@
         android:id="@+id/spinner_choose_button_function"
         android:prompt="@string/button_function_prompt"
         android:entries="@array/button_functions"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="30dp"
         >
     </Spinner>
+
+    <Spinner
+        android:id="@+id/spinner_choose_pin"
+
+        android:entries="@array/device_pins"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="30dp"
+        />
 
     <Spinner
         android:id="@+id/add_button_icon_spinner"

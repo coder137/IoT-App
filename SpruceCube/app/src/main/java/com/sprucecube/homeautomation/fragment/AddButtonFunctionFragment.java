@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -111,6 +112,8 @@ public class AddButtonFunctionFragment extends Fragment {
         }
         else
         {
+            final TextView statusTextview = activity.findViewById(R.id.addbutton_status);
+
             final Spinner addDevicesSpinner = activity.findViewById(R.id.spinner_add_devices);
             final ArrayList<String> devicesList = new ArrayList<>();
 
@@ -148,9 +151,14 @@ public class AddButtonFunctionFragment extends Fragment {
                                 devicesList
                         );
                         addDevicesSpinner.setAdapter(spinnerDevicesAdapter);
+
+                        statusTextview.setText("Connected");
                     }
                     else
                     {
+                        statusTextview.setText("Cannot connect");
+                        Log.e(TAG, "Cannot find parse server");
+
                         //TODO, Error Toast here
                         e.printStackTrace();
                     }

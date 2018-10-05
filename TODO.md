@@ -22,4 +22,5 @@
 
 ## Shared Preferences
 
-- [ ] Use String set when writing to Shared Prefs
+- [x] Use String set when writing to Shared Prefs
+    - Will not work for our use case

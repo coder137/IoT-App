@@ -17,9 +17,17 @@
     <!-- Entries -->
     <string name="button_function_prompt">Choose button Function</string>
     <string name="add_room">Add Room</string>
+
     <string-array name="button_functions">
         <item>Switch</item>
         <item>Control</item>
+    </string-array>
+
+    <string-array name="device_pins">
+        <item>pin1</item>
+        <item>pin2</item>
+        <item>pin3</item>
+        <item>pin4</item>
     </string-array>
 
 </resources>
