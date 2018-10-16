@@ -27,6 +27,18 @@
         />
 
     <Spinner
+        android:id="@+id/spinner_choose_button_pin"
+        android:entries="@array/button_pins"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="30dp"
+        >
+
+    </Spinner>
+
+    <Spinner
         android:id="@+id/spinner_choose_button_function"
         android:prompt="@string/button_function_prompt"
         android:entries="@array/button_functions"

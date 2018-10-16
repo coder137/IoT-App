@@ -22,4 +22,11 @@
         <item>Control</item>
     </string-array>
 
+    <string-array name="button_pins">
+        <item>pin1</item>
+        <item>pin2</item>
+        <item>pin3</item>
+        <item>pin4</item>
+    </string-array>
+
 </resources>
