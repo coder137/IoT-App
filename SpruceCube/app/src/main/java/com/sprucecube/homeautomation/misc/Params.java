@@ -26,6 +26,7 @@ public class Params
     // TODO, Find what this is
     public static final String TAG_NAME = "name";
     public static final String DEVICE_OBJECT ="device_object";
+    public static final String DEVICE_PIN = "device_pin";
 
     //Filenames
     public static final String ROOM_FILE = "roomfile.txt";

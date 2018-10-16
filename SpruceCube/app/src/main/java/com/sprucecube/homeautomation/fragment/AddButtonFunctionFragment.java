@@ -182,15 +182,21 @@ public class AddButtonFunctionFragment extends Fragment {
             return ;
         }
 
+        // NOTE, Add Devices Spinner
         Spinner addDeviceSpinner = activity.findViewById(R.id.spinner_add_devices);
         String deviceData = addDeviceSpinner.getSelectedItem().toString();
         int devicePosition = addDeviceSpinner.getSelectedItemPosition();
         Log.d(TAG, "DeviceObject: "+devicesObjectId.get(devicePosition));
         Log.d(TAG, "DeviceName: "+deviceData);
 
+        // NOTE, Button Function spinner
         Spinner buttonFunctionSpinner = activity.findViewById(R.id.spinner_choose_button_function);
-        String data = buttonFunctionSpinner.getSelectedItem().toString();
+        String buttonFunctionData = buttonFunctionSpinner.getSelectedItem().toString();
 
+        Spinner devicePinSpinner = activity.findViewById(R.id.spinner_choose_pin);
+        String devicePin = devicePinSpinner.getSelectedItem().toString();
+
+        // NOTE, Button Images spinner
         Spinner buttonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
         ImageItemClass imageData = (ImageItemClass) buttonIconSpinner.getSelectedItem();
 
@@ -212,10 +218,11 @@ public class AddButtonFunctionFragment extends Fragment {
 
         // FIXME, Dirty Fix
 //        editor.putString(identification_id, url+":"+data+":"+imageData.getImageId());
-        editor.putString(identification_id, ""+":"+data+":"+imageData.getImageId());
+        editor.putString(identification_id, ""+":"+buttonFunctionData+":"+imageData.getImageId());
 
         // TODO, Add the device object here, TEST
         editor.putString(identification_id+":"+Params.DEVICE_OBJECT, devicesObjectId.get(devicePosition));
+        editor.putString(identification_id+":"+Params.DEVICE_PIN, devicePin);
 
         editor.putString(identification_id+":"+Params.TAG_NAME, name);
         editor.apply(); //we want it to block the thread (use apply if you want it async)
