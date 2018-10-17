@@ -1,8 +1,6 @@
 package com.sprucecube.homeautomation;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -30,47 +28,53 @@ public class DimmerDialogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dimmer_dialog);
 
+        // NOTE, This is IMPORTANT ( FIXME )
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         getWindow().setLayout((6*width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         Intent intent = getIntent();
         url = intent.getStringExtra(Params.PIN_DIMMING_URL);
+        Log.d(TAG, "final_url: "+url);
         //dimmerPin = intent.getStringExtra(Params.PIN_NUM);
         //Log.d(TAG, dimmerPin);
 
         //SharedPreferences sharedPreferences = getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
         //ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
-    }
 
-    public void cancelDimmerClick(View view)
-    {
-        finish();
-    }
-
-    public void acceptDimmerClick(View view)
-    {
         SeekBar seekBar = findViewById(R.id.dimmer_seekbar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+                postControlProgress(seekBar);
+            }
+        });
+    }
+
+    void postControlProgress(SeekBar seekBar)
+    {
         int progress = seekBar.getProgress();
+        int conversion = 100-progress;
 
-        //DONE, Convert from 0-100 from 5-128
+        Log.d(TAG, progress+"");
+        Log.d(TAG, conversion+"");
 
-        // int conversion = (int) (progress*1.23 +5);
-        int conversion = 100 - progress;
-        Log.d(TAG, "Progress: "+progress);
-        Log.d(TAG, "Conversion: "+conversion);
-
-        //DONE, Form the URL here and send it
-        ///String url = "http://"+ip_address+"/DIMMING?"+dimmerPin+"="+conversion;
-        //http://192.168.29.100/DIMMING?pin1=
-        url = url + conversion;
-        Log.d(TAG, url);
+        Log.d(TAG, url+conversion);
 
         AsyncHTTP asyncHTTP = new AsyncHTTP(POST_METHOD, new AsyncHTTP.CallbackReceived() {
             @Override
             public void onResponseReceived(String result)
             {
-                if(result == null)
+                if (result == null)
                 {
                     Toast.makeText(DimmerDialogActivity.this, "Request: Timeout", Toast.LENGTH_SHORT).show();
                 }
@@ -81,7 +85,11 @@ public class DimmerDialogActivity extends AppCompatActivity {
             }
         });
 
-        asyncHTTP.execute(url);
+        asyncHTTP.execute(url+conversion);
+    }
+
+    public void acceptDimmerClick(View view)
+    {
         finish();
     }
 }

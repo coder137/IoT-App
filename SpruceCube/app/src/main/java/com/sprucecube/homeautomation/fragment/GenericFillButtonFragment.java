@@ -3,6 +3,7 @@ package com.sprucecube.homeautomation.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sprucecube.homeautomation.DimmerDialogActivity;
 import com.sprucecube.homeautomation.R;
 import com.sprucecube.homeautomation.misc.AsyncHTTP;
 import com.sprucecube.homeautomation.misc.HelperMethods;
@@ -188,6 +190,13 @@ public class GenericFillButtonFragment extends Fragment {
             else if (mode == 1)
             {
                 Log.d(TAG, "Mode: CONTROL");
+                Intent dimmerIntent = new Intent(getActivity(), DimmerDialogActivity.class);
+
+                String final_url = "http://"+url+"/"+modeString+"?pin="+pin+"&value=";
+                Log.d(TAG, "Executing Control: "+final_url);
+
+                dimmerIntent.putExtra(Params.PIN_DIMMING_URL, final_url);
+                startActivity(dimmerIntent);
             }
         }
     }
