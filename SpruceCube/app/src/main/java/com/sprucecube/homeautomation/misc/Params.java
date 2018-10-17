@@ -27,8 +27,12 @@ public class Params
 
     public static final String TAG_NAME = "name";
     public static final String TAG_URL = "url";
-    public static final String TAG_PIN_TYPE = "pin_type";
     public static final String TAG_IMAGE_ID = "image_id";
+
+    // Preferences (Schema)
+    public static  final String TAG_PIN_TYPE_STRING = "pin_type_string";
+    public static final String TAG_PIN_TYPE = "pin_type";
+    public static final String TAG_PIN_NUMBER = "pin_number";
 
     //Filenames
     public static final String ROOM_FILE = "roomfile.txt";

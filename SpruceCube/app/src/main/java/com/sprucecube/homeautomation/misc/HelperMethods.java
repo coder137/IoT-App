@@ -92,19 +92,20 @@ public class HelperMethods
         //get the current nav_id
         String identification = nav_id+":"+button_id;
 
-        Log.d(TAG, identification);
+//        Log.d(TAG, identification);
+
         //String buttonData = sharedPreferences.getString(identification,null);
         String buttonNameData = sharedPreferences.getString(identification+":"+Params.TAG_NAME, null);
         int buttonImageData = sharedPreferences.getInt(identification+":"+Params.TAG_IMAGE_ID, 0);
 
         if(buttonNameData != null)
         {
-            Log.d(TAG, buttonNameData);
+//            Log.d(TAG, buttonNameData);
             //String[] buttonSpecificData = buttonData.trim().split(":");
             genericButton.setText(buttonNameData);
 
             //TODO, This might be NULL
-            Log.d(TAG, String.valueOf(buttonImageData));
+//            Log.d(TAG, String.valueOf(buttonImageData));
             genericButton.setCompoundDrawablesWithIntrinsicBounds(buttonImageData,0, 0, 0);
             return true;
         }

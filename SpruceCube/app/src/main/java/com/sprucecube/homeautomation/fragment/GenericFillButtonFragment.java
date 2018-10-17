@@ -3,7 +3,6 @@ package com.sprucecube.homeautomation.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,13 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sprucecube.homeautomation.DimmerDialogActivity;
 import com.sprucecube.homeautomation.R;
 import com.sprucecube.homeautomation.misc.AsyncHTTP;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
-
-import java.util.Arrays;
 
 /**
  * Cleaned: 25.06.2018
@@ -51,8 +47,7 @@ public class GenericFillButtonFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null)
-        {
+        if (getArguments() != null) {
             nav_id = getArguments().getString(Params.NAVIGATION_ID);
             room_name = getArguments().getString(Params.ROOM_TITLE);
         }
@@ -82,14 +77,11 @@ public class GenericFillButtonFragment extends Fragment {
         buttonActions(nav_id, activity, sharedPreferences);
     }
 
-    void buttonActions(final String nav_id, Activity activity, final SharedPreferences sharedPreferences)
-    {
-        for(int i=1;i<=9;i++)
-        {
+    void buttonActions(final String nav_id, Activity activity, final SharedPreferences sharedPreferences) {
+        for (int i = 1; i <= 9; i++) {
             //final int button_id = getResources().getIdentifier("button"+i, "id", activity.getPackageName());
             int button_id = HelperMethods.getButtonId((AppCompatActivity) activity, i);
-            if(button_id == 0)
-            {
+            if (button_id == 0) {
                 Log.wtf(TAG, "Button ID is 0");
             }
 
@@ -107,12 +99,10 @@ public class GenericFillButtonFragment extends Fragment {
     }
 
 
-    void setLongClickButtonAction(Button genericButton, final int button_id)
-    {
+    void setLongClickButtonAction(Button genericButton, final int button_id) {
         genericButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View view)
-            {
+            public boolean onLongClick(View view) {
                 //DONE, Attach your action here
                 onLongUserButtonClick(button_id);
                 return true;
@@ -123,16 +113,14 @@ public class GenericFillButtonFragment extends Fragment {
     /*
     Used to modify the contents of a button
      */
-    void onLongUserButtonClick(int button_id)
-    {
-        AddButtonFunctionFragment addButtonFunctionFragment = AddButtonFunctionFragment.newInstance(nav_id+":"+button_id);
+    void onLongUserButtonClick(int button_id) {
+        AddButtonFunctionFragment addButtonFunctionFragment = AddButtonFunctionFragment.newInstance(nav_id + ":" + button_id);
         //HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), addButtonFunctionFragment, true);
         HelperMethods.startFragmentMethod((AppCompatActivity) getActivity(), addButtonFunctionFragment, Params.FAV_STACK);
     }
 
 
-    void setClickButtonAction(Button genericButton, final SharedPreferences sharedPreferences)
-    {
+    void setClickButtonAction(Button genericButton, final SharedPreferences sharedPreferences) {
         genericButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,83 +132,134 @@ public class GenericFillButtonFragment extends Fragment {
     /*
     Check if the data is present inside the file, if not return null
      */
-    void onUserButtonClick(View view, SharedPreferences preferences)
-    {
+    void onUserButtonClick(View view, SharedPreferences preferences) {
         Log.d(TAG, "onUserButtonClick");
 
         int id = view.getId();
-        Log.d(TAG, "ButtonId: "+id);
+        Log.d(TAG, "ButtonId: " + id);
 
         //String name = getResources().getResourceEntryName(id);
         //SharedPreferences preferences = getSharedPreferences(Params.PREFS, MODE_PRIVATE);
 
-        String identification_id = nav_id+":"+id;
+        String identification_id = nav_id + ":" + id;
         Log.d(TAG, identification_id);
-        String data = preferences.getString(identification_id, null);
-        if(data == null)
+
+        String url = preferences.getString(identification_id + ":" + Params.TAG_URL, null);
+        int mode = preferences.getInt(identification_id + ":" + Params.TAG_PIN_TYPE, 0);
+        int pin = preferences.getInt(identification_id + ":" + Params.TAG_PIN_NUMBER, 0);
+        String modeString = preferences.getString(identification_id+":"+Params.TAG_PIN_TYPE_STRING, null);
+
+        if (url == null)
         {
-           onLongUserButtonClick(id);
+            onLongUserButtonClick(id);
         }
         else
         {
-            Log.d(TAG, "We got the data==> " +data);
+            Log.d(TAG, "url: " + url);
+            Log.d(TAG, "mode: " + mode);
+            Log.d(TAG, "pin: " + pin);
 
-//            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
-//            String ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
-//
-//            if(ip_address.equals(""))
-//            {
-//                Toast.makeText(getActivity(), "Fill Settings screen", Toast.LENGTH_SHORT).show();
-//                return ;
-//            }
-
-            String pin_type = preferences.getString(identification_id+":"+Params.TAG_PIN_TYPE, null);
-            String url = preferences.getString(identification_id+":"+Params.TAG_URL, null);
-            //DONE, Different functionality for SWITCH and DIMMER HERE
-//            String[] splitData = data.split(":");
-//            Log.d(TAG, Arrays.toString(splitData));
-
-            if(pin_type.equals(Params.CONTROL_ACTION))
+            if (mode == 0)
             {
-                //DONE, Start DimmerDialogActivity here
-                Log.d(TAG, Params.CONTROL_ACTION);
-
-                Intent dimmerIntent = new Intent(getActivity(), DimmerDialogActivity.class);
-
-                //httpL//192.168.29.100/DIMMING
-                dimmerIntent.putExtra(Params.PIN_DIMMING_URL, url);
-                startActivity(dimmerIntent);
-            }
-            else if(pin_type.equals(Params.SWITCH_ACTION))
-            {
-                //DONE, Do switch stuff here
-                Log.d(TAG, Params.SWITCH_ACTION);
-
-                //String url = "http://"+ip_address+"/"+splitData[0];
-                //http://192.186.29.100/LED
-                Log.d(TAG, url);
-
-                //This is 1 METHOD
-                //PostAsync postAsync = new PostAsync(getActivity());
-                //postAsync.execute(url);
-
-                AsyncHTTP asyncHTTP = new AsyncHTTP(AsyncHTTP.POST_METHOD, new AsyncHTTP.CallbackReceived() {
+                Log.d(TAG, "Mode: SWITCH");
+                AsyncHTTP asyncHTTP =  new AsyncHTTP(AsyncHTTP.POST_METHOD, new AsyncHTTP.CallbackReceived() {
                     @Override
                     public void onResponseReceived(String result)
                     {
                         if(result == null)
                         {
-                            Toast.makeText(getActivity(), "Request: Timeout", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Request Timeout", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
+                            Log.d(TAG, result);
                             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
-                asyncHTTP.execute(url);
+                // url is of the form
+                // http://<ip_address>/switch?pin=<pin_number>
+                // url: http://<ip_address>/switch
+                String final_url = "http://"+url+"/"+modeString+"?pin="+pin;
+                Log.d(TAG, "Executing: "+final_url);
+                asyncHTTP.execute(final_url);
+            }
+            else if (mode == 1)
+            {
+                Log.d(TAG, "Mode: CONTROL");
             }
         }
     }
+
+//    void oldFunction()
+//    {
+//        String data = preferences.getString(identification_id, null);
+//        if(data == null)
+//        {
+//            onLongUserButtonClick(id);
+//        }
+//        else
+//        {
+//            Log.d(TAG, "We got the data==> " +data);
+//
+////            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
+////            String ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
+////
+////            if(ip_address.equals(""))
+////            {
+////                Toast.makeText(getActivity(), "Fill Settings screen", Toast.LENGTH_SHORT).show();
+////                return ;
+////            }
+//
+//            String pin_type = preferences.getString(identification_id+":"+Params.TAG_PIN_TYPE, null);
+//            String url = preferences.getString(identification_id+":"+Params.TAG_URL, null);
+//            //DONE, Different functionality for SWITCH and DIMMER HERE
+////            String[] splitData = data.split(":");
+////            Log.d(TAG, Arrays.toString(splitData));
+//
+//            if(pin_type.equals(Params.CONTROL_ACTION))
+//            {
+//                //DONE, Start DimmerDialogActivity here
+//                Log.d(TAG, Params.CONTROL_ACTION);
+//
+//                Intent dimmerIntent = new Intent(getActivity(), DimmerDialogActivity.class);
+//
+//                //httpL//192.168.29.100/DIMMING
+//                dimmerIntent.putExtra(Params.PIN_DIMMING_URL, url);
+//                startActivity(dimmerIntent);
+//            }
+//            else if(pin_type.equals(Params.SWITCH_ACTION))
+//            {
+//                //DONE, Do switch stuff here
+//                Log.d(TAG, Params.SWITCH_ACTION);
+//
+//                //String url = "http://"+ip_address+"/"+splitData[0];
+//                //http://192.186.29.100/LED
+//                Log.d(TAG, url);
+//
+//                //This is 1 METHOD
+//                //PostAsync postAsync = new PostAsync(getActivity());
+//                //postAsync.execute(url);
+//
+//                AsyncHTTP asyncHTTP = new AsyncHTTP(AsyncHTTP.POST_METHOD, new AsyncHTTP.CallbackReceived() {
+//                    @Override
+//                    public void onResponseReceived(String result)
+//                    {
+//                        if(result == null)
+//                        {
+//                            Toast.makeText(getActivity(), "Request: Timeout", Toast.LENGTH_SHORT).show();
+//                        }
+//                        else
+//                        {
+//                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//
+//                asyncHTTP.execute(url);
+//            }
+//        }
+//    }
+
 }

@@ -3,7 +3,6 @@ package com.sprucecube.homeautomation.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -110,13 +108,19 @@ public class AddButtonFunctionFragment extends Fragment {
             return ;
         }
 
-        Spinner spinner = activity.findViewById(R.id.spinner_choose_button_function);
-        String pin_type = spinner.getSelectedItem().toString();
+        Spinner pinSpinner = activity.findViewById(R.id.spinner_choose_button_pin);
+        int pin_number = pinSpinner.getSelectedItemPosition();
+
+        Spinner modeSpinner = activity.findViewById(R.id.spinner_choose_button_function);
+        String pin_mode_string = modeSpinner.getSelectedItem().toString();
+        int pin_mode = modeSpinner.getSelectedItemPosition();
 
         Spinner buttonIconSpinner = activity.findViewById(R.id.add_button_icon_spinner);
         ImageItemClass imageData = (ImageItemClass) buttonIconSpinner.getSelectedItem();
 
         //TODO, Remove if needed
+        Log.d(TAG, "pin_number: "+pin_number);
+        Log.d(TAG, "pin_mode: "+pin_mode);
         Log.d(TAG, imageData.getText());
         Log.d(TAG, String.valueOf(imageData.getImageId()));
         Log.d(TAG, identification_id);
@@ -133,13 +137,18 @@ public class AddButtonFunctionFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         //TODO, Clean this later
-        editor.putString(identification_id, url+":"+pin_type+":"+imageData.getImageId());
+        editor.putString(identification_id, url+":"+pin_mode+":"+imageData.getImageId());
 
         //TODO, This is VERY IMPORTANT
         editor.putInt(identification_id+":"+Params.TAG_IMAGE_ID, imageData.getImageId());
-        editor.putString(identification_id+":"+Params.TAG_PIN_TYPE, pin_type);
         editor.putString(identification_id+":"+Params.TAG_URL, url);
         editor.putString(identification_id+":"+Params.TAG_NAME, name);
+
+//        editor.putString(identification_id+":"+Params.TAG_PIN_TYPE, pin_mode);
+        // NOTE, These are the schemas
+        editor.putString(identification_id+":"+Params.TAG_PIN_TYPE_STRING, pin_mode_string.toLowerCase());
+        editor.putInt(identification_id+":"+Params.TAG_PIN_TYPE, pin_mode);
+        editor.putInt(identification_id+":"+Params.TAG_PIN_NUMBER, pin_number);
 
         editor.apply(); //we want it to block the thread (use apply if you want it async)
     }
