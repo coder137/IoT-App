@@ -16,6 +16,7 @@ public class Params
     public static final String SWITCH_ACTION = "Switch";
     public static final String CONTROL_ACTION = "Control";
     public static final String PIN_NUM = "pin_num";
+    public static final String PIN_OBJECT_STRING = "pin_object_string";
 
     public static final String INTENT_BUNDLE = "intent_bundle";
 

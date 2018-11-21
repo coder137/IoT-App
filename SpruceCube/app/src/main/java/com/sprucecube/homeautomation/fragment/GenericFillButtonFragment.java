@@ -208,7 +208,9 @@ public class GenericFillButtonFragment extends Fragment {
                 Log.d(TAG, Params.CONTROL_ACTION);
 
                 Intent dimmerIntent = new Intent(getActivity(), DimmerDialogActivity.class);
-                dimmerIntent.putExtra(Params.PIN_NUM, splitData[0]);
+//                dimmerIntent.putExtra(Params.PIN_NUM, splitData[0]);
+                dimmerIntent.putExtra(Params.PIN_OBJECT_STRING, deviceObjectData);
+                dimmerIntent.putExtra(Params.PIN_NUM, devicePinData);
                 startActivity(dimmerIntent);
             }
             else if(splitData[1].equals(Params.SWITCH_ACTION))
@@ -231,6 +233,7 @@ public class GenericFillButtonFragment extends Fragment {
                                 // Update the TYPE of the pin
                                 String type = jObj.getString("type");
                                 if (!type.equals(Params.SWITCH_ACTION.toLowerCase())){
+                                    Log.d(TAG, "Updated " + devicePinData + " to type SWITCH");
                                     jObj.put("type", "switch");
                                     jObj.put("value", 0);
                                 }

@@ -1,8 +1,6 @@
 package com.sprucecube.homeautomation;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -10,75 +8,102 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
-import com.sprucecube.homeautomation.misc.AsyncHTTP;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.sprucecube.homeautomation.misc.Params;
 
-import static com.sprucecube.homeautomation.misc.AsyncHTTP.POST_METHOD;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DimmerDialogActivity extends AppCompatActivity {
 
     private static final String TAG = "DimmerDialogAct";
 
-    String dimmerPin, ip_address;
+//    String dimmerPin, ip_address;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dimmer_dialog);
 
+        // NOTE, FIXME
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
-        getWindow().setLayout((6*width)/7, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().setLayout((6 * width) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         Intent intent = getIntent();
-        dimmerPin = intent.getStringExtra(Params.PIN_NUM);
-        Log.d(TAG, dimmerPin);
+//        dimmerPin = intent.getStringExtra(Params.PIN_NUM);
+        String deviceObjectData = intent.getStringExtra(Params.PIN_OBJECT_STRING);
+        final String devicePinData = intent.getStringExtra(Params.PIN_NUM);
+        Log.d(TAG, "deviceObjectData: " + deviceObjectData);
+        Log.d(TAG, "devicePinData: " + devicePinData);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Params.SETTINGS, Context.MODE_PRIVATE);
-        ip_address = sharedPreferences.getString(String.valueOf(R.id.settings_host_url), "");
-    }
+        final SeekBar seekBar = findViewById(R.id.dimmer_seekbar);
 
-    public void cancelDimmerClick(View view)
-    {
-        finish();
-    }
 
-    public void acceptDimmerClick(View view)
-    {
-        SeekBar seekBar = findViewById(R.id.dimmer_seekbar);
-        int progress = seekBar.getProgress();
-
-        //DONE, Convert from 0-100 from 5-128
-
-        // int conversion = (int) (progress*1.23 +5);
-        int conversion = 100 - progress;
-        Log.d(TAG, "Progress: "+progress);
-        Log.d(TAG, "Conversion: "+conversion);
-
-        //DONE, Form the URL here and send it
-        String url = "http://"+ip_address+"/DIMMING?"+dimmerPin+"="+conversion;
-        Log.d(TAG, url);
-
-        AsyncHTTP asyncHTTP = new AsyncHTTP(POST_METHOD, new AsyncHTTP.CallbackReceived() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Devices");
+        query.getInBackground(deviceObjectData, new GetCallback<ParseObject>() {
             @Override
-            public void onResponseReceived(String result)
-            {
-                if(result == null)
-                {
-                    Toast.makeText(DimmerDialogActivity.this, "Request: Timeout", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(DimmerDialogActivity.this, result, Toast.LENGTH_SHORT).show();
+            public void done(final ParseObject object, ParseException e) {
+                if (e == null) {
+                    final JSONObject jObj = object.getJSONObject(devicePinData);
+
+                    // Update the TYPE of the pin
+                    String type = null;
+                    try {
+                        type = jObj.getString("type");
+                        if (!type.equals(Params.CONTROL_ACTION.toLowerCase())) {
+                            Log.d(TAG, "Updated " + devicePinData + " to type CONTROL");
+                            jObj.put("type", "control");
+                            jObj.put("value", 0);
+                        }
+
+                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                                int progress = seekBar.getProgress();
+                                int conversion = 100-progress;
+
+                                // Put value here
+                                try {
+                                    jObj.put("value", conversion);
+                                    Log.d(TAG, "value: "+conversion);
+
+                                    //DONE, Sync with Parse Server here
+                                    object.put(devicePinData, jObj);
+                                    object.saveInBackground();
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                        });
+
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                } else {
+                    Log.d(TAG, "Cannot connect to Server");
                 }
             }
         });
+    }
 
-        asyncHTTP.execute(url);
+
+    public void acceptDimmerClick(View view)
+    {
         finish();
-
     }
 }
