@@ -17,11 +17,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.sprucecube.homeautomation.DimmerDialogActivity;
 import com.sprucecube.homeautomation.R;
-import com.sprucecube.homeautomation.misc.AsyncHTTP;
 import com.sprucecube.homeautomation.misc.HelperMethods;
 import com.sprucecube.homeautomation.misc.Params;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -154,8 +161,19 @@ public class GenericFillButtonFragment extends Fragment {
         //String name = getResources().getResourceEntryName(id);
         //SharedPreferences preferences = getSharedPreferences(Params.PREFS, MODE_PRIVATE);
 
-        Log.d(TAG, nav_id+":"+id);
-        String data = preferences.getString(nav_id+":"+id, null);
+        String identification_id = nav_id+":"+id;
+
+        Log.d(TAG, "IdentificationId: "+identification_id);
+        String data = preferences.getString(identification_id, null);
+
+        String deviceObjectData = preferences.getString(identification_id+":"+Params.DEVICE_OBJECT, null);
+        final String devicePinData = preferences.getString(identification_id+":"+Params.DEVICE_PIN, null);
+        String deviceTagData = preferences.getString(identification_id+":"+Params.TAG_NAME, null);
+
+        Log.d(TAG, "deviceObjectData: "+deviceObjectData);
+        Log.d(TAG, "devicePinData: "+devicePinData);
+        Log.d(TAG, "deviceTagData: "+deviceTagData);
+
         if(data == null)
         {
            onLongUserButtonClick(id);
@@ -172,6 +190,13 @@ public class GenericFillButtonFragment extends Fragment {
                 Toast.makeText(getActivity(), "Fill Settings screen", Toast.LENGTH_SHORT).show();
                 return ;
             }
+
+            // TODO, Initialize Parse server here
+            String app_id = sharedPreferences.getString(String.valueOf(R.id.settings_app_id), "");
+            Parse.initialize(new Parse.Configuration.Builder(getActivity())
+                    .applicationId(app_id.trim())
+                    .server("http://"+ip_address.trim()+":1337/parse/")
+                    .build());
 
             //DONE, Different functionality for SWITCH and DIMMER HERE
             String[] splitData = data.split(":");
@@ -191,29 +216,51 @@ public class GenericFillButtonFragment extends Fragment {
                 //DONE, Do switch stuff here
                 Log.d(TAG, Params.SWITCH_ACTION);
 
-                String url = "http://"+ip_address+"/"+splitData[0];
-                Log.d(TAG, url);
+                // TODO, Send a PUT request to the Parse server here
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Devices");
 
-                //This is 1 METHOD
-                //PostAsync postAsync = new PostAsync(getActivity());
-                //postAsync.execute(url);
-
-                AsyncHTTP asyncHTTP = new AsyncHTTP(AsyncHTTP.POST_METHOD, new AsyncHTTP.CallbackReceived() {
+                query.getInBackground(deviceObjectData, new GetCallback<ParseObject>() {
                     @Override
-                    public void onResponseReceived(String result)
-                    {
-                        if(result == null)
-                        {
-                            Toast.makeText(getActivity(), "Request: Timeout", Toast.LENGTH_SHORT).show();
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null){
+                            JSONObject jObj = object.getJSONObject(devicePinData);
+                            try {
+                                // TODO, Update JSON Object
+                                Log.d(TAG, devicePinData+"::"+jObj.toString(2));
+
+                                // Update the TYPE of the pin
+                                String type = jObj.getString("type");
+                                if (!type.equals(Params.SWITCH_ACTION.toLowerCase())){
+                                    jObj.put("type", "switch");
+                                    jObj.put("value", 0);
+                                }
+
+                                // Update the VALUE of the pin
+                                int v = jObj.getInt("value");
+                                v = v ^ 1;
+                                Log.d(TAG, "Value of v: "+v);
+                                jObj.put("value", v);
+
+                                // TODO, Sync this with the database
+                                object.put(devicePinData, jObj);
+                                object.saveInBackground();
+
+                                Log.d(TAG, "Saved in background");
+
+                            } catch (JSONException e1) {
+                                Log.wtf(TAG, "Not a valid json object");
+                                e1.printStackTrace();
+                            }
                         }
-                        else
-                        {
-                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getActivity(), "Timeout: Cannot connect to server", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Cannot find parse server");
+
+                            //TODO, Error Toast here
+                            e.printStackTrace();
                         }
                     }
                 });
-
-                asyncHTTP.execute(url);
             }
         }
     }

@@ -122,7 +122,7 @@ public class AddButtonFunctionFragment extends Fragment {
                 devicesObjectId = new ArrayList<>();
             }
 
-            // TODO, Add Parse Server connection here
+            // DONE, Add Parse Server connection here
             // NOTE, WORKS
             Parse.initialize(new Parse.Configuration.Builder(activity)
                     .applicationId(app_id.trim())
@@ -130,6 +130,8 @@ public class AddButtonFunctionFragment extends Fragment {
                     .build());
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Devices");
+
+            statusTextview.setText("Connecting...");
 
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
